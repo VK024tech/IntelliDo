@@ -24,6 +24,7 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       scope: ["profile", "email"],
       accessType: "offline",
+      proxy: true
     //   prompt: "consent",
     },
     async (accessToken, refreshToken, profile, done) => {

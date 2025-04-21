@@ -39,6 +39,14 @@ router.post("/signup", async (req, res) => {
   const userInfo = req.body;
   const validate = signUpZod.safeParse(userInfo);
 
+  const existingUser = await user.findOne({
+    email: userInfo.email
+  })
+
+  if(existingUser){
+    return res.status(400).send('Email already exists, Please SignIn!');
+  }
+
   if (!validate.success) {
     return res.status(400).send(validate.error.issues[0].message);
   }

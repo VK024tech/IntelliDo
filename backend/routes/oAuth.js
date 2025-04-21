@@ -19,7 +19,7 @@ const { getFullMessage } = require("../config/emailFetch");
 //for verifying jwt token
 const { authMiddleware } = require("../middleware/authenticate");
 
-//to register the defined google stretegy
+//to register the defined google strategy
 require("../config/openAuth");
 
 //token refresh
@@ -35,7 +35,7 @@ router.get(
     ],
     session: false,
     accessType: "offline",
-    prompt: "consent",
+    // prompt: "consent",
   })
 );
 
@@ -47,9 +47,7 @@ router.get(
   }),
   (req, res) => {
     const { token, accessToken, refreshToken, user } = req.user;
-    res.json({
-      token: token,
-    });
+    res.redirect("http://localhost:5173")
   }
 );
 
