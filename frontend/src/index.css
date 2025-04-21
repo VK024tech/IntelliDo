@@ -1,0 +1,21 @@
+
+
+@import "tailwindcss";
+
+body{
+    color:#212122;
+
+    /* transition: all 1000ms; */
+    
+}
+
+
+@theme{
+    --font-poppins: 'poppins', 'sans-serif'
+}
+
+@layer base {
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  }
