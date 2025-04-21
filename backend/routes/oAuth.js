@@ -35,7 +35,7 @@ router.get(
     ],
     session: false,
     accessType: "offline",
-    // prompt: "consent",
+    prompt: "consent",
   })
 );
 
@@ -47,7 +47,7 @@ router.get(
   }),
   (req, res) => {
     const { token, accessToken, refreshToken, user } = req.user;
-    res.redirect("http://localhost:5173")
+    res.redirect(`http://localhost:5173/dashboard?jwt=${token}`)
   }
 );
 

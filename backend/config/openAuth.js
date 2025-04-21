@@ -24,8 +24,7 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       scope: ["profile", "email"],
       accessType: "offline",
-      proxy: true
-    //   prompt: "consent",
+      prompt: "consent",
     },
     async (accessToken, refreshToken, profile, done) => {
       //check if the user is present in database or create a new user

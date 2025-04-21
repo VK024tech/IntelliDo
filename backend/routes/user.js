@@ -64,9 +64,9 @@ router.post("/signup", async (req, res) => {
     return res.status(400).send(error);
   }
 
-  res.json({
-    msg: "signedup",
-  });
+ res.json({
+  msg: "signedUp"
+ })
 });
 
 //route for signin
