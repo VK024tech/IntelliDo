@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 import { MdOutlineMailOutline } from "react-icons/md";
 import { LiaEyeSolid, LiaEyeSlashSolid } from "react-icons/lia";
@@ -41,11 +42,11 @@ export default function UserSign() {
   }
 
   const [passwordError, setPasswordError] = useState("");
-
   const [emailError, setEmailError] = useState("");
   const [userNameError, setUserNameError] = useState("");
 
-  function signupButton() {
+  async function signupButton() {
+    ////form validation check
     const regex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (userEmail.length < 1) {
@@ -56,18 +57,49 @@ export default function UserSign() {
     if (userName.length < 1) {
       setUserNameError("Username is required!");
     }
-    if (userPassword.length < 1) {
-      setPasswordError("Password is required!");
-    } else if (!regex.test(userPassword)) {
-      console.log("errro");
-      setPasswordError("Weak password");
+
+    if (!userPassword.length < 1) {
+      if (regex.test(userPassword)) {
+        if (userPassword == confirmUserPassword) {
+          setPasswordError("");
+        } else {
+          return setPasswordError("Password does not match!");
+        }
+      } else {
+        return setPasswordError("Weak password");
+      }
     } else {
-      if (!userPassword == confirmUserPassword) {
-        setPasswordError("Password does not match!");
-      }else{
-        setPasswordError("");
+      return setPasswordError("Password is required!");
+    }
+
+    ////send api call only if all error are empty
+    if (passwordError == "" && userNameError == "" && emailError == "") {
+      try {
+        const response = await SignUpUser();
+        console.log(response.data.msg);
+      } catch (error) {
+        console.log(error.response.data);
+        setEmailError(error.response.data);
       }
     }
+  }
+
+  async function SignUpUser() {
+    const response = await axios.post("http://localhost:3200/user/signup", {
+      name: userName,
+      username: userName.split(" ")[0],
+      email: userEmail,
+      password: userPassword,
+    });
+
+    return response;
+  }
+
+  async function signUpWithGoogle() {
+    // const response = await axios.get("http://localhost:3200/auth/google");
+    window.location.href = "http://localhost:3200/auth/google";
+    // console.log(response)
+    // return response;
   }
 
   function componentUserName() {
@@ -97,7 +129,6 @@ export default function UserSign() {
                 } else {
                   setActiveName(true);
                 }
-                console.log(userName);
               }}
             />
           </div>
@@ -111,7 +142,7 @@ export default function UserSign() {
       <div className="mb-2">
         <div className="pb-1 text-gray-800 font-bold flex flex-row justify-between">
           Email
-          <span className=" text-xs mt-auto max-w-50  text-red-400 font-bold">
+          <span className=" text-xs mt-auto max-w-60  text-red-400 font-bold">
             {emailError}
           </span>
         </div>
@@ -133,7 +164,6 @@ export default function UserSign() {
                 } else {
                   setActiveEmail(true);
                 }
-                console.log(userEmail);
               }}
             />
           </div>
@@ -190,6 +220,7 @@ export default function UserSign() {
                 placeholder="Confirm password"
                 onChange={(e) => {
                   setConfirmUserPassword(e.target.value);
+                  setPasswordError("");
                 }}
               />
             </div>
@@ -220,7 +251,7 @@ export default function UserSign() {
             onClick={() => {
               signupButton();
             }}
-            className="bg-teal-400 text-white p-2 text-center rounded-md py-3 mb-4 cursor-pointer"
+            className="bg-teal-300 hover:bg-teal-400 text-white p-2 text-center rounded-md py-3 mb-4 cursor-pointer"
           >
             Sign Up
           </div>
@@ -231,7 +262,12 @@ export default function UserSign() {
             </span>
             <hr className="max-w-24 w-full h-px  bg-gray-500 border-0"></hr>
           </div>
-          <div className="mx-auto border-2 p-2 rounded-full border-gray-200 mb-4 cursor-pointer">
+          <div
+            onClick={() => {
+              signUpWithGoogle();
+            }}
+            className="mx-auto border-2 p-2 rounded-full border-gray-200 mb-4 cursor-pointer"
+          >
             <FcGoogle size={32} />
           </div>
           <div className="inline-flex text-sm items-center justify-center w-full text-gray-800 font-bold">
