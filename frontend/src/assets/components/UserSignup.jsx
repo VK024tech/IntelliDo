@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import { MdOutlineMailOutline } from "react-icons/md";
 import { LiaEyeSolid, LiaEyeSlashSolid } from "react-icons/lia";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineUser } from "react-icons/ai";
 
+
 export default function UserSign() {
+  const navigate = useNavigate();
+
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
 
@@ -76,7 +80,9 @@ export default function UserSign() {
     if (passwordError == "" && userNameError == "" && emailError == "") {
       try {
         const response = await SignUpUser();
-        console.log(response.data.msg);
+        if (response.data.msg == "signedUp") {
+          return navigate("/signin");
+        }
       } catch (error) {
         console.log(error.response.data);
         setEmailError(error.response.data);
@@ -102,7 +108,7 @@ export default function UserSign() {
     // return response;
   }
 
-  function componentUserName() {
+ function componentUserName() {
     return (
       <div className="mb-2">
         <div className="pb-1 text-gray-800 font-bold flex flex-row justify-between">
@@ -172,7 +178,7 @@ export default function UserSign() {
     );
   }
 
-  function componentUserPassword() {
+   function componentUserPassword() {
     return (
       <>
         <div className="mb-4">
@@ -230,6 +236,7 @@ export default function UserSign() {
     );
   }
 
+
   return (
     <div className="bg-gradient-to-r from-teal-100 to-teal-50 w-screen h-screen p-12">
       <div className="bg-white w-auto flex flex-row justify-center rounded-2xl shadow-lg shadow-teal-200  items-center h-full py-8 pl-8 [@media(width<1240px)]:mx-20 md:mx-50">
@@ -272,12 +279,16 @@ export default function UserSign() {
           </div>
           <div className="inline-flex text-sm items-center justify-center w-full text-gray-800 font-bold">
             Already have an account?{" "}
-            <span className="text-gray-500 font-medium pl-1 underline cursor-pointer">
-              Log in here
-            </span>
+            <a href='/signin' className="text-gray-500 font-medium pl-1 underline cursor-pointer">
+              SignIn here
+            </a>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+
+
+
