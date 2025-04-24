@@ -15,7 +15,7 @@ function StartDateTime() {
         
             id="calendar-12h"
             value={startDateTime}
-            onChange={(e) => setStartDateTime(e.value)}
+            onChange={(e) => setStartDateTime(e.target.value)}
             showTime
             hourFormat="12"
           />

@@ -9,6 +9,7 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path="/" element={<UserSign />} />
         <Route path="/signup" element={<UserSign />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/signin" element={<UserLogin />} />

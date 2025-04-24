@@ -15,7 +15,7 @@ function EndDateTime() {
             id="calendar-12h"
             value={endDateTime}
             onChange={(e)=>{
-              setEndDateTime(e.value)
+              setEndDateTime(e.target.value)
               console.log(endDateTime)
             }}
             showTime

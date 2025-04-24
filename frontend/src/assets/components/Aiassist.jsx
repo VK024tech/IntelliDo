@@ -53,7 +53,7 @@ function Aiassist() {
         {Suggestions()}
         </div>
         <div className="fixed bottom-0 bg-gray-100 px-16.5 py-4 ">
-          <div className="flex justify-center font-md text-gray-600 mb-2  items-center bg-white p-2 cursor-pointer transition-colors  hover:text-teal-700  hover:border-teal-300 hover:border-t-2 rounded-xl border-t-1 border-gray-300">
+          <div className="flex justify-center font-md text-gray-600   items-center bg-white p-2 cursor-pointer transition-colors  hover:text-teal-700  hover:border-teal-300 hover:border-t-2 rounded-xl border-t-1 border-gray-300">
             <LuRefreshCw
               style={{ color: "#00BBA7" }}
               size={22}

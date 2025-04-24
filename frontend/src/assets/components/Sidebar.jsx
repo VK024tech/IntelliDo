@@ -101,7 +101,7 @@ function Sidebar() {
           {Projects()}
         </div>
 
-        <div className="cursor-pointer bg-white rounded-xl transition-colors  hover:text-teal-700  hover:border-teal-300 hover:border-t-2 text-gray-700 flex flex-row items-center border-t-1 border-gray-300 p-3 mb-4 pl-0 ">
+        <div className="cursor-pointer  bg-white rounded-xl transition-colors  hover:text-teal-700  hover:border-teal-300 hover:border-t-2 text-gray-700 flex flex-row items-center border-t-1 border-gray-300 p-3 mb-4 pl-0 ">
           <IoAdd className="mr-2 " style={{ iconColor }} size={24} />
           Create Category
         </div>
