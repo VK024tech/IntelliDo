@@ -1,55 +1,123 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
 import { FiTag } from "react-icons/fi";
 import { SlFlag } from "react-icons/sl";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdOutlineCalendarToday } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function MainScreen() {
   const iconColor = "#aeabb6";
-  const taskIcon = "#adadad";
+  let taskIcon = "#adadad";
+  const navigate = useNavigate();
+  const [taskList, setTaskList] = useState([]);
+  const [updatedTaskList, setUpdatedTaskList] = useState(false);
+  
+
+  useEffect(() => {
+    FetchTaskList();
+  }, [updatedTaskList]);
+
+  async function FetchTaskList() {
+    const token = sessionStorage.getItem("currentSession");
+    if (!token) {
+      navigate("/signin");
+      return;
+    }
+
+    try {
+      const response = await axios.get("http://localhost:3200/todo/todolist", {
+        headers: {
+          token: token,
+        },
+      });
+      // console.log(response.data.todoList);
+      if (response.data.message == "todoList fetched") {
+        setTaskList(response.data.todoList);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function deleteTodo(id) {
+    if (confirm("Are you sure?")) {
+      const token = sessionStorage.getItem("currentSession");
+      if (!token) {
+        alert("Something went Wrong, Please Sign in again!");
+        return;
+      }
+
+      try {
+        const response = await axios.delete(
+          "http://localhost:3200/todo/delete",
+          {
+            headers: {
+              token: token,
+              todoid: id,
+            },
+          }
+        );
+        // console.log(response);
+        if (response.data.message == "todoDeleted") {
+          setUpdatedTaskList(true);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 
   function Tasks() {
-    return (
-      <div className="flex flex-row  justify-between cursor-pointer  hover:bg-gray-100 rounded-md py-2 px-2 pr-3 my-1 items-center font-medium text-gray-700 mx-6">
-        <div className="flex items-center gap-3">
-          <div className="border-2 p-2 w-fit hover:bg-teal-100 h-fit rounded-2xl border-teal-400 "></div>
-          <div>
-            Complete project proporsal
-            <div className="flex gap-2 font-normal text-sm text-gray-500">
-              <div>
-                <span>💼</span> work
-              </div>
-              <div>
-                <span>🗓️</span> Today
+    return taskList.map((task) => {
+      return (
+        <div
+          key={task._id}
+          className="flex flex-row  justify-between cursor-pointer  hover:bg-gray-100 rounded-md py-2 px-2 pr-3 my-1 items-center font-medium text-gray-700 mx-6"
+        >
+          <div className="flex items-center gap-3">
+            <div className="border-2 p-2 w-fit hover:bg-teal-100 h-fit rounded-2xl border-teal-400 "></div>
+            <div>
+              {task.title}
+              <div className="flex gap-2 font-normal text-sm text-gray-500">
+                <div>
+                  <span>💼</span> {task.category}
+                </div>
+                <div>
+                  <span>🗓️</span> {task.creationDate}
+                </div>
               </div>
             </div>
           </div>
+          <div className="flex gap-3">
+            <MdOutlineCalendarToday
+              className="cursor-pointer rounded-md"
+              style={{ color: taskIcon }}
+              size={17}
+            />
+            <FiTag
+              className="cursor-pointer"
+              style={{ color: taskIcon }}
+              size={17}
+            />
+            <SlFlag
+              className="cursor-pointer"
+              style={{ color: taskIcon }}
+              size={17}
+            />
+            <RiDeleteBin6Line
+              onClick={() => {
+                deleteTodo(task._id);
+              }}
+              className="cursor-pointer "
+              style={{ color: taskIcon }}
+              size={17}
+            />
+          </div>
         </div>
-        <div className="flex gap-3">
-          <MdOutlineCalendarToday
-            className="cursor-pointer rounded-md"
-            style={{ color: taskIcon }}
-            size={17}
-          />
-          <FiTag
-            className="cursor-pointer"
-            style={{ color: taskIcon }}
-            size={17}
-          />
-          <SlFlag
-            className="cursor-pointer"
-            style={{ color: taskIcon }}
-            size={17}
-          />
-          <RiDeleteBin6Line
-            className="cursor-pointer"
-            style={{ color: taskIcon }}
-            size={17}
-          />
-        </div>
-      </div>
-    );
+      );
+    });
   }
 
   return (
@@ -69,19 +137,21 @@ function MainScreen() {
             Completed
           </div>
         </div>
-        <div className="flex gap-2 mx-6 transition-colors hover:border-teal-300 hover:bg-teal-100 rounded-md py-3 p-1 border-1 border-gray-300 text-gray-400">
+        <div
+          onClick={() => {
+            navigate("/dashboard/newtask");
+          }}
+          className="flex gap-2 mx-6 transition-colors hover:border-teal-300 hover:bg-teal-100 rounded-md py-3 p-1 border-1 border-gray-300 text-gray-400"
+        >
           <IoAdd
             className="cursor-pointer  rounded-sm "
             style={{ iconColor }}
             size={24}
           />
-          Add a task....
+          New task...
         </div>
       </div>
-      <div className="mt-3">
-        {Tasks()}
-        {Tasks()}
-      </div>
+      <div className="mt-3">{Tasks()}</div>
     </div>
   );
 }

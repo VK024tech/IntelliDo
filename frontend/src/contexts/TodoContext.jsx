@@ -6,11 +6,33 @@ export const TodoContextProvider = ({ children }) => {
   const [startDateTime, setStartDateTime] = useState();
   const [endDateTime, setEndDateTime] = useState();
 
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("Personal");
+  const [priority, setPriority] = useState("low");
+  const [subtasks, setSubtasks] = useState("");
+
+  const [btnClikedTask, setBtnClikedTask] = useState(false);
+
+  
+
   const contextValue = {
     startDateTime,
     setStartDateTime,
     endDateTime,
-    setEndDateTime
+    setEndDateTime,
+    title,
+    setTitle,
+    description,
+    setDescription,
+    category,
+    setCategory,
+    priority,
+    setPriority,
+    subtasks,
+    setSubtasks,
+    btnClikedTask,
+    setBtnClikedTask
   };
 
   return (

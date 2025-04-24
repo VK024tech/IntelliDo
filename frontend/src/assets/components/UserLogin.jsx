@@ -68,7 +68,7 @@ function UserLogin() {
     if (passwordError == "" && emailError == "") {
       try {
         const response = await SignInUser();
-        console.log(response);
+
         if (response.data.message == "signedin") {
           const token = response.data.token;
 

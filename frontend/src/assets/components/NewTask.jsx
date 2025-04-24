@@ -3,18 +3,21 @@ import StartDateTime from "./DateTimeComponents/StartDateTime";
 import EndDateTime from "./DateTimeComponents/EndDateTime";
 import { TodoContext } from "../../contexts/TodoContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import { MdErrorOutline } from "react-icons/md";
 const errorColor = "#f24949";
 
 function NewTask() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("Personal");
-  const [priority, setPriority] = useState("low");
-  const [subtasks, setSubtasks] = useState("");
+  const navigate = useNavigate();
 
-  const [btnClikedTask, setBtnClikedTask] = useState(false);
+  const { title, setTitle } = useContext(TodoContext);
+  const { description, setDescription } = useContext(TodoContext);
+  const { category, setCategory } = useContext(TodoContext);
+  const { priority, setPriority } = useContext(TodoContext);
+  const { subtasks, setSubtasks } = useContext(TodoContext);
+
+  const { btnClikedTask, setBtnClikedTask } = useContext(TodoContext);
 
   const { startDateTime, setStartDateTime } = useContext(TodoContext);
   const { endDateTime, setEndDateTime } = useContext(TodoContext);
@@ -61,24 +64,49 @@ function NewTask() {
 
     const token = sessionStorage.getItem("currentSession");
 
-    const response = await axios.post("http://localhost:3200/todo/add", {
-      token: token,
-      title: title,
-      priority: priority,
-      completed: "false",
-      creationDate: startDateTime,
-      endDate: endDateTime,
-    });
-
-    console.log(response.data.message);
-    
+    try {
+      const response = await axios.post(
+        "http://localhost:3200/todo/add",
+        {
+          title: title,
+          priority: priority,
+          completed: "false",
+          creationDate: startDateTime,
+          endDate: endDateTime,
+          description: description,
+          subtasks: subtasks,
+          category: category,
+        },
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+      // console.log(response.data.message);
+      if (response.data.message == "Successfull") {
+        setCategory('Personal')
+        setDescription('')
+        setEndDateTime('')
+        setPriority('Low')
+        setStartDateTime('')
+        setSubtasks('')
+        setTitle('')
+        navigate("/dashboard");
+        setBtnClikedTask(false)
+      }
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
   }
 
   return (
-    <div className="w-screen h-dvh ">
+    <div className="w-screen h-dvh overflow-y-auto ">
       <div className="flex flex-col h-dvh justify-center items-center ">
-        <div className="h-full w-full min-h-fit min-w-fit bg-white px-8 rounded-2xl pb-2   py-8">
-          <div className="text-xl font-semibold">Task:</div>
+        <div className="h-full w-full min-h-fit min-w-fit bg-white px-4 rounded-2xl pb-2   py-8">
+          <div className="font-bold text-xl   text-gray-800  pb-1 border-b-1 border-gray-300">
+            New task
+          </div>
           {taskTittleAndDes()}
 
           <div className="max-w-150 w-full">
@@ -140,13 +168,20 @@ function NewTask() {
           </div>
         </div>
         <div className="flex gap-4 mb-4  justify-end self-end  mx-4">
-          <div className="bg-gray-100 text-sm self-center cursor-pointer hover:bg-red-300 hover:border-red-400 transition  w-fit h-auto   px-6 border border-gray-200 rounded-xl py-3  font-semibold text-gray-700">
+          <div
+            onClick={() => {
+              setBtnClikedTask(false)
+              navigate("/dashboard");
+            }}
+            className="bg-gray-100 text-sm self-center cursor-pointer hover:bg-red-300 hover:border-red-400 transition  w-fit h-auto   px-6 border border-gray-200 rounded-xl py-3  font-semibold text-gray-700"
+          >
             Discard
           </div>
           <div
             onClick={() => {
               setBtnClikedTask(true);
               TaskCreateNew();
+              
             }}
             className="bg-teal-300 text-sm self-center cursor-pointer hover:bg-teal-400 border border-teal-300 hover:border-teal-800  transition  w-fit  px-6  rounded-xl py-3 font-semibold text-gray-800"
           >

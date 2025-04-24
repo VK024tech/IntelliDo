@@ -8,7 +8,7 @@ function EndDateTime() {
   const { endDateTime, setEndDateTime } = useContext(TodoContext);
 
   return (
-    <div className=" flex justify-center w-45  py-1 text-md pl-1 font-medium rounded-md border-1 border-gray-400 bg-gray-100 text-gray-800">
+    <div className=" flex justify-center w-50  py-1 text-md pl-3 font-medium rounded-md border-1 border-gray-400 bg-gray-100 text-gray-800">
       <div className="card flex flex-wrap gap-3 p-fluid">
         <div className="flex-auto ">
           <Calendar
@@ -16,7 +16,7 @@ function EndDateTime() {
             value={endDateTime}
             onChange={(e)=>{
               setEndDateTime(e.target.value)
-              console.log(endDateTime)
+    
             }}
             showTime
             hourFormat="12"
