@@ -1,8 +1,97 @@
-import React from "react";
-
+import React, { useContext, useState } from "react";
+import { UserContext } from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { MdOutlineMailOutline } from "react-icons/md";
+import { LiaEyeSolid, LiaEyeSlashSolid } from "react-icons/lia";
+
+import axios from "axios";
 
 function UserLogin() {
+  const navigate = useNavigate();
+  const { userEmail, setUserEmail } = useContext(UserContext);
+
+  const { passwordError, setPasswordError } = useContext(UserContext);
+  const { emailError, setEmailError } = useContext(UserContext);
+  const { userNameError, setUserNameError } = useContext(UserContext);
+
+  const { userPassword, setuserPassword } = useContext(UserContext);
+
+  const { type, setType } = useContext(UserContext);
+  const { eye, setEye } = useContext(UserContext);
+
+  const { activeEmail, setActiveEmail } = useContext(UserContext);
+  const { activePassword, setActivePassword } = useContext(UserContext);
+
+  const emailColor = { fill: activeEmail ? "#6a7282" : "#00D5BE" };
+  const passwordColor = { fill: activePassword ? "#6a7282" : "#00D5BE" };
+
+  function passwordIcon() {
+    if (!eye) {
+      return <LiaEyeSolid style={passwordColor} size={24} />;
+    } else {
+      return <LiaEyeSlashSolid style={passwordColor} size={24} />;
+    }
+  }
+
+  async function signInWithGoogle() {
+    window.location.href = "http://localhost:3200/auth/google";
+  }
+
+  async function SignInUser() {
+    const response = await axios.post("http://localhost:3200/user/signin", {
+      email: userEmail,
+      password: userPassword,
+    });
+
+    return response;
+  }
+
+  async function signInButton() {
+    ////form validation check
+
+    if (userEmail.length === 0) {
+      setEmailError("Email is required!");
+    } else if (!userEmail.includes("@")) {
+      setEmailError("Enter a valid Email!");
+    } else {
+      setEmailError("");
+    }
+
+    if (userPassword.length === 0) {
+      return setPasswordError("Password is required!");
+    } else {
+      setPasswordError("");
+    }
+
+    ////send api call only if all error are empty
+    if (passwordError == "" && emailError == "") {
+      try {
+        const response = await SignInUser();
+        console.log(response);
+        if (response.data.message == "signedin") {
+          const token = response.data.token;
+
+          sessionStorage.setItem("currentSession", token);
+
+          return navigate("/dashboard", {replace: true});
+        }
+      } catch (error) {
+        setEmailError(error.response.data.message);
+      }
+    }
+  }
+
+  function visiblityToggle() {
+    if (!eye) {
+      setType("password");
+      setEye(true);
+    } else {
+      setType("text");
+      setEye(false);
+    }
+  }
+
   function componentUserPassword() {
     return (
       <>
@@ -37,21 +126,6 @@ function UserLogin() {
                   } else {
                     setActivePassword(true);
                   }
-                }}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="mb-2">
-          <div className="border-2 rounded-md border-gray-500 overflow-hidden">
-            <div className="flex flex-row">
-              <input
-                className="w-full py-2 pl-4 outline-none"
-                type={type}
-                placeholder="Confirm password"
-                onChange={(e) => {
-                  setConfirmUserPassword(e.target.value);
-                  setPasswordError("");
                 }}
               />
             </div>
@@ -95,6 +169,7 @@ function UserLogin() {
       </div>
     );
   }
+
   return (
     <div className="bg-gradient-to-r from-teal-100 to-teal-50 w-screen h-screen p-12">
       <div className="bg-white w-auto flex flex-row justify-center rounded-2xl shadow-lg shadow-teal-200  items-center h-full py-8 pl-8 [@media(width<1240px)]:mx-20 md:mx-50">
@@ -111,32 +186,32 @@ function UserLogin() {
 
           {componentUserEmail()}
           {componentUserPassword()}
-            
+
           <div
             onClick={() => {
-              signupButton();
+              signInButton();
             }}
             className="bg-teal-300 hover:bg-teal-400 text-white p-2 text-center rounded-md py-3 mb-4 cursor-pointer"
           >
             Sign In
           </div>
           <div className="inline-flex text-sm  items-center justify-center w-full  mb-4">
-            <hr className="max-w-24 w-full h-px  bg-gray-500 border-0"></hr>
+            <hr className="max-w-24 w-full h-[0.5px]  bg-gray-500 border-0"></hr>
             <span className="px-2  text-gray-500 font-medium">
               Or Continue With
             </span>
-            <hr className="max-w-24 w-full h-px  bg-gray-500 border-0"></hr>
+            <hr className="max-w-24 w-full h-[0.5px]  bg-gray-500 border-0"></hr>
           </div>
           <div
             onClick={() => {
-              signUpWithGoogle();
+              signInWithGoogle();
             }}
             className="mx-auto border-2 p-2 rounded-full border-gray-200 mb-4 cursor-pointer"
           >
             <FcGoogle size={32} />
           </div>
           <div className="inline-flex text-sm items-center justify-center w-full text-gray-800 font-bold">
-            Already have an account?{" "}
+            Don't have an account?{" "}
             <a
               href="/signup"
               className="text-gray-500 font-medium pl-1 underline cursor-pointer"

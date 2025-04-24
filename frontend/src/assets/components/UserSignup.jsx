@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -6,22 +6,24 @@ import { MdOutlineMailOutline } from "react-icons/md";
 import { LiaEyeSolid, LiaEyeSlashSolid } from "react-icons/lia";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineUser } from "react-icons/ai";
-
+import { UserContext } from "../../contexts/UserContext";
 
 export default function UserSign() {
   const navigate = useNavigate();
 
-  const [userEmail, setUserEmail] = useState("");
-  const [userName, setUserName] = useState("");
+  const { userEmail, setUserEmail } = useContext(UserContext);
+  const { userName, setUserName } = useContext(UserContext);
 
   ///password
-  const [userPassword, setuserPassword] = useState("");
-  const [confirmUserPassword, setConfirmUserPassword] = useState("");
-  const [type, setType] = useState("password");
-  const [eye, setEye] = useState(true);
-  const [activeName, setActiveName] = useState(true);
-  const [activeEmail, setActiveEmail] = useState(true);
-  const [activePassword, setActivePassword] = useState(true);
+  const { userPassword, setuserPassword } = useContext(UserContext);
+  const { confirmUserPassword, setConfirmUserPassword } =
+    useContext(UserContext);
+  const { type, setType } = useContext(UserContext);
+  const { eye, setEye } = useContext(UserContext);
+
+  const { activeName, setActiveName } = useContext(UserContext);
+  const { activeEmail, setActiveEmail } = useContext(UserContext);
+  const { activePassword, setActivePassword } = useContext(UserContext);
 
   const nameColor = { fill: activeName ? "#6a7282" : "#00D5BE" };
   const emailColor = { fill: activeEmail ? "#6a7282" : "#00D5BE" };
@@ -45,15 +47,15 @@ export default function UserSign() {
     }
   }
 
-  const [passwordError, setPasswordError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [userNameError, setUserNameError] = useState("");
+  const { passwordError, setPasswordError } = useContext(UserContext);
+  const { emailError, setEmailError } = useContext(UserContext);
+  const { userNameError, setUserNameError } = useContext(UserContext);
 
   async function signupButton() {
     ////form validation check
     const regex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (userEmail.length < 1) {
+    if (userEmail.length === 0) {
       setEmailError("Email is required!");
     } else if (!userEmail.includes("@")) {
       setEmailError("Enter a valid Email!");
@@ -108,7 +110,7 @@ export default function UserSign() {
     // return response;
   }
 
- function componentUserName() {
+  function componentUserName() {
     return (
       <div className="mb-2">
         <div className="pb-1 text-gray-800 font-bold flex flex-row justify-between">
@@ -178,7 +180,7 @@ export default function UserSign() {
     );
   }
 
-   function componentUserPassword() {
+  function componentUserPassword() {
     return (
       <>
         <div className="mb-4">
@@ -236,7 +238,6 @@ export default function UserSign() {
     );
   }
 
-
   return (
     <div className="bg-gradient-to-r from-teal-100 to-teal-50 w-screen h-screen p-12">
       <div className="bg-white w-auto flex flex-row justify-center rounded-2xl shadow-lg shadow-teal-200  items-center h-full py-8 pl-8 [@media(width<1240px)]:mx-20 md:mx-50">
@@ -263,11 +264,11 @@ export default function UserSign() {
             Sign Up
           </div>
           <div className="inline-flex text-sm  items-center justify-center w-full  mb-4">
-            <hr className="max-w-24 w-full h-px  bg-gray-500 border-0"></hr>
+            <hr className="max-w-24 w-full h-[0.5px]  bg-gray-500 border-0"></hr>
             <span className="px-2  text-gray-500 font-medium">
               Or Continue With
             </span>
-            <hr className="max-w-24 w-full h-px  bg-gray-500 border-0"></hr>
+            <hr className="max-w-24 w-full h-[0.5px]  bg-gray-500 border-0"></hr>
           </div>
           <div
             onClick={() => {
@@ -279,7 +280,10 @@ export default function UserSign() {
           </div>
           <div className="inline-flex text-sm items-center justify-center w-full text-gray-800 font-bold">
             Already have an account?{" "}
-            <a href='/signin' className="text-gray-500 font-medium pl-1 underline cursor-pointer">
+            <a
+              href="/signin"
+              className="text-gray-500 font-medium pl-1 underline cursor-pointer"
+            >
               SignIn here
             </a>
           </div>
@@ -288,7 +292,3 @@ export default function UserSign() {
     </div>
   );
 }
-
-
-
-

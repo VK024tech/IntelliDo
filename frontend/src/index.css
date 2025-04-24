@@ -1,21 +1,32 @@
-
-
 @import "tailwindcss";
 
-body{
-    color:#212122;
+@plugin "daisyui";
 
-    /* transition: all 1000ms; */
-    
+body {
+  color: #212122;
+
+  /* transition: all 1000ms; */
 }
 
-
-@theme{
-    --font-poppins: 'poppins', 'sans-serif'
+@theme {
+  --font-poppins: "poppins", "sans-serif";
 }
 
 @layer base {
-    body {
-      font-family: 'Poppins', sans-serif;
-    }
+  body {
+    font-family: "Poppins", sans-serif;
   }
+}
+
+.p-datepicker {
+  background-color: white;
+  padding-inline: 4px;
+  border-radius: 10px;
+  
+}
+
+.p-timepicker * {
+  padding-inline: 2px;
+  width: max-content;
+  background-color: white;
+}
