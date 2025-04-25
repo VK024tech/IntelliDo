@@ -15,9 +15,14 @@ function MainScreen() {
   const navigate = useNavigate();
   const { taskList, setTaskList } = useContext(TodoContext);
   const { clickedIndex, setClickedIndex } = useContext(TodoContext);
+
   const [taskCompleted, setTaskCompleted] = useState(false);
   const [updatedTaskList, setUpdatedTaskList] = useState(false);
   const [filterMethod, setFilterMethod] = useState("all");
+
+  const { selectedCategory, setSelectedCategory } = useContext(TodoContext);
+
+  const { dateBasedFilter, setDateBasedFilter } = useContext(TodoContext);
 
   useEffect(() => {
     FetchTaskList();
@@ -109,16 +114,49 @@ function MainScreen() {
   }
 
   function Tasks() {
+    let dateFilter = [];
+
+    const today = new Date().toLocaleDateString();
+
+    if (dateBasedFilter !== "") {
+      if (dateBasedFilter == "Today") {
+        dateFilter = taskList.filter((curr) => {
+          const dateTime = curr.creationDate;
+          const newDateTime = new Date(dateTime);
+
+          return newDateTime.toLocaleDateString() === today;
+        });
+      } else if (dateBasedFilter == "Upcoming")
+        dateFilter = taskList.filter((curr) => {
+          const dateTime = curr.creationDate;
+          const newDateTime = new Date(dateTime);
+
+          return newDateTime.toLocaleDateString() > today;
+        });
+    } else {
+      dateFilter = taskList;
+    }
+
+    let categoryTask = [];
+
+    if (selectedCategory !== "") {
+      categoryTask = dateFilter.filter(
+        (curr) => curr.category == selectedCategory
+      );
+    } else {
+      categoryTask = dateFilter;
+    }
+
     let tasks = [];
 
     if (filterMethod !== "all") {
       if (filterMethod == "active") {
-        tasks = taskList.filter((current) => current.completed == false);
+        tasks = categoryTask.filter((current) => current.completed == false);
       } else if (filterMethod == "completed") {
-        tasks = taskList.filter((current) => current.completed == true);
+        tasks = categoryTask.filter((current) => current.completed == true);
       }
     } else {
-      tasks = taskList;
+      tasks = categoryTask;
     }
 
     return tasks.map((task, index) => {
@@ -142,9 +180,9 @@ function MainScreen() {
       return (
         <div
           key={task._id}
-          className="flex flex-row  justify-between cursor-pointer  hover:bg-gray-100 rounded-md py-2 px-2 pr-3 my-1 items-center font-medium text-gray-700 mx-6"
+          className="flex flex-row overflow-y-auto justify-between cursor-pointer  hover:bg-gray-100 rounded-md py-2 px-2 pr-3 my-1 items-center font-medium text-gray-700 mx-6"
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center  gap-3">
             <div
               onClick={() => {
                 isCompleteTask(task._id);
@@ -187,7 +225,7 @@ function MainScreen() {
             </div>
           </div>
           <div className="flex gap-3">
-            <MdOutlineCalendarToday
+            {/* <MdOutlineCalendarToday
               className="cursor-pointer rounded-md"
               style={{ color: taskIcon }}
               size={17}
@@ -201,7 +239,7 @@ function MainScreen() {
               className="cursor-pointer"
               style={{ color: taskIcon }}
               size={17}
-            />
+            /> */}
             <RiDeleteBin6Line
               onMouseEnter={() => {
                 deleteEnter = true;
@@ -210,7 +248,7 @@ function MainScreen() {
                 deleteTodo(task._id);
               }}
               className="cursor-pointer "
-              style={{ color: deleteEnter ? taskIcon : "#eb4034" }}
+              style={{ color: deleteEnter ? taskIcon : "#f5655b" }}
               size={17}
             />
           </div>

@@ -14,10 +14,20 @@ export const TodoContextProvider = ({ children }) => {
 
   const [btnClikedTask, setBtnClikedTask] = useState(false);
 
-   const [taskList, setTaskList] = useState([]);
-   const [clickedIndex, setClickedIndex] = useState('')
+  const [taskList, setTaskList] = useState([]);
+  const [clickedIndex, setClickedIndex] = useState("");
 
-  
+  const [totalCategories, setTotalCategories] = useState([
+      "Personal",
+      "Work",
+      "Health",
+      "Learning",
+    ]);
+
+     const [selectedCategory, setSelectedCategory] = useState('')
+
+       const [dateBasedFilter, setDateBasedFilter] = useState("");
+
 
   const contextValue = {
     startDateTime,
@@ -39,7 +49,13 @@ export const TodoContextProvider = ({ children }) => {
     taskList,
     setTaskList,
     clickedIndex,
-    setClickedIndex
+    setClickedIndex,
+    totalCategories,
+    setTotalCategories,
+    selectedCategory,
+    setSelectedCategory,
+    dateBasedFilter,
+    setDateBasedFilter
   };
 
   return (

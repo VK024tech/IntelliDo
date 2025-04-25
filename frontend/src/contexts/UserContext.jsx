@@ -18,6 +18,7 @@ export const UserContextProvider = ({ children }) => {
   const [confirmUserPassword, setConfirmUserPassword] = useState("");
   const [type, setType] = useState("password");
   const [eye, setEye] = useState(true);
+  
 
   const contextValue = {
     emailError,

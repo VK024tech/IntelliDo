@@ -1,21 +1,108 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IoAdd, IoBookOutline, IoCalendarNumberOutline } from "react-icons/io5";
 import { LuHouse } from "react-icons/lu";
 import { BsSuitcaseLg } from "react-icons/bs";
 import { FaRegHeart } from "react-icons/fa";
 import { MdDoubleArrow } from "react-icons/md";
+import { WiMoonAltNew } from "react-icons/wi";
+
+import axios from "axios";
+import { TodoContext } from "../../contexts/TodoContext";
 
 function Sidebar() {
   const iconColor = "#aeabb6";
 
-  const [projects, setProjects] = useState([]);
+  const { totalCategories, setTotalCategories } = useContext(TodoContext);
+
+  const { selectedCategory, setSelectedCategory } = useContext(TodoContext);
+  const {dateBasedFilter, setDateBasedFilter} = useContext(TodoContext);
+
+  useEffect(() => {
+    fetchAllCategories();
+  }, []);
+
+  async function fetchAllCategories() {
+    const token = sessionStorage.getItem("currentSession");
+    if (!token) {
+      return navigate("/signin");
+    }
+
+    try {
+      const response = await axios.get(
+        "http://localhost:3200/user/allcategories",
+
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+      // console.log(response.data.todoList);
+      if (response.data.message == "categories fetched") {
+        setTotalCategories(response.data.allCategories);
+        // console.log(response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function addNewCategory() {
+    const CategoryName = prompt("Category name:", "");
+    if (!CategoryName || CategoryName.trim() == "") {
+      alert("Category name cannot be empty!");
+      return;
+    }
+
+    setTotalCategories([...totalCategories, CategoryName]);
+
+    const token = sessionStorage.getItem("currentSession");
+    if (!token) {
+      return navigate("/signin");
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3200/user/addcategory",
+        {
+          totalCategories: [...totalCategories, CategoryName],
+        },
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+      // console.log(response.data.todoList);
+      if (response.data.message == "Successfull created category") {
+        console.log("done");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   function Menu() {
     return (
       <>
         <div className="pl-2 pb-6">
           <div>
-            <div className="cursor-pointer hover:bg-gray-200 rounded-xl text-gray-700 flex flex-row items-center  px-3 py-2">
+            <div
+              onClick={() => {
+                if (dateBasedFilter !== "Today") {
+                  setDateBasedFilter("Today");
+                  console.log(dateBasedFilter);
+                } else {
+                  setDateBasedFilter("");
+                  console.log(dateBasedFilter);
+                }
+              }}
+              className={`cursor-pointer transition  rounded-xl ${
+                dateBasedFilter == "Today"
+                  ? "bg-teal-500 text-white "
+                  : "hover:bg-gray-200"
+              }  text-gray-700 flex flex-row items-center  px-3 py-2`}
+            >
               <IoCalendarNumberOutline
                 style={{ iconColor }}
                 size={18}
@@ -23,7 +110,22 @@ function Sidebar() {
               />
               Today
             </div>
-            <div className="cursor-pointer hover:bg-gray-200 rounded-xl text-gray-700 flex flex-row items-center  px-3 py-2">
+            <div
+              onClick={() => {
+                if (dateBasedFilter !== "Upcoming") {
+                  setDateBasedFilter("Upcoming");
+                  console.log(dateBasedFilter);
+                } else {
+                  setDateBasedFilter("");
+                  console.log(dateBasedFilter);
+                }
+              }}
+              className={`cursor-pointer transition  rounded-xl ${
+                dateBasedFilter == "Upcoming"
+                  ? "bg-teal-500 text-white "
+                  : "hover:bg-gray-200"
+              }  text-gray-700 flex flex-row items-center  px-3 py-2`}
+            >
               <MdDoubleArrow
                 style={{ iconColor }}
                 size={20}
@@ -36,52 +138,95 @@ function Sidebar() {
       </>
     );
   }
-  function Projects() {
+
+  function DynamicCategoryArray() {
+    const categoryIcons = {
+      Work: (
+        <BsSuitcaseLg
+          style={{ color: `${selectedCategory == "Work" ? "" : "#FB8C00"}` }}
+          size={18}
+          className="mr-2 "
+        />
+      ),
+      Personal: (
+        <LuHouse
+          style={{
+            color: `${selectedCategory == "Personal" ? "" : "#039BE5"}`,
+          }}
+          size={18}
+          className="mr-2 "
+        />
+      ),
+      Learning: (
+        <IoBookOutline
+          style={{
+            color: `${selectedCategory == "Learning" ? "" : "#4CAF50"}`,
+          }}
+          size={18}
+          className="mr-2 "
+        />
+      ),
+      Health: (
+        <FaRegHeart
+          style={{ color: `${selectedCategory == "Health" ? "" : "#F44336"}` }}
+          size={18}
+          className="mr-2 "
+        />
+      ),
+      Custom: (
+        <WiMoonAltNew
+          style={{
+            color: `${
+              selectedCategory == "Health" || "Learning" || "Personal" || "work"
+                ? ""
+                : "#fffff"
+            }`,
+          }}
+          size={18}
+          className="mr-2 "
+        />
+      ),
+    };
+
+    return totalCategories.map((category, index) => {
+      return (
+        <div
+          onClick={() => {
+            if (selectedCategory !== category) {
+              setSelectedCategory(category);
+              console.log(selectedCategory);
+            } else {
+              setSelectedCategory("");
+              console.log(selectedCategory);
+            }
+          }}
+          key={category}
+          className={`cursor-pointer transition  rounded-xl text-gray-700 ${
+            selectedCategory == category
+              ? "bg-teal-500 text-white "
+              : "hover:bg-gray-200"
+          }  flex flex-row items-center px-3 py-2`}
+        >
+          {categoryIcons[category] || categoryIcons["Custom"]}
+          {category}
+        </div>
+      );
+    });
+  }
+
+  function category() {
     return (
       <>
         <div className="pl-2">
           <div className="text-gray-700 pb-1  font-semibold flex flex-row items-center justify-between">
             Category
-            <IoAdd
+            {/* <IoAdd
               className="cursor-pointer hover:bg-gray-200 rounded-sm "
               style={{ iconColor }}
               size={24}
-            />
+            /> */}
           </div>
-          <div>
-            <div className=" cursor-pointer hover:bg-gray-200 rounded-xl text-gray-700  flex flex-row items-center px-3 py-2">
-              <LuHouse
-                style={{ color: "#039BE5" }}
-                size={18}
-                className="mr-2 "
-              />
-              Personal
-            </div>
-            <div className="cursor-pointer hover:bg-gray-200 rounded-xl text-gray-700 flex flex-row items-center  px-3 py-2">
-              <BsSuitcaseLg
-                style={{ color: "#FB8C00" }}
-                size={18}
-                className="mr-2 "
-              />
-              Work
-            </div>
-            <div className="cursor-pointer hover:bg-gray-200 rounded-xl text-gray-700 flex flex-row items-center  px-3 py-2">
-              <IoBookOutline
-                style={{ color: "#4CAF50" }}
-                size={18}
-                className="mr-2 "
-              />
-              Learning
-            </div>
-            <div className="cursor-pointer hover:bg-gray-200 rounded-xl text-gray-700 flex flex-row items-center  px-3 py-2">
-              <FaRegHeart
-                style={{ color: "#F44336" }}
-                size={18}
-                className="mr-2 "
-              />
-              Health
-            </div>
-          </div>
+          {DynamicCategoryArray()}
         </div>
       </>
     );
@@ -98,11 +243,17 @@ function Sidebar() {
             </div>
           </div>
           {Menu()}
-          {Projects()}
+          {category()}
         </div>
 
-        <div className="cursor-pointer  bg-white rounded-xl transition-colors  hover:text-teal-700  hover:border-teal-300 hover:border-t-2 text-gray-700 flex flex-row items-center border-t-1 border-gray-300 p-3 mb-4 pl-0 ">
-          <IoAdd className="mr-2 " style={{ iconColor }} size={24} />
+        <div
+          onClick={() => {
+            addNewCategory();
+            fetchAllCategories();
+          }}
+          className="cursor-pointer  bg-white rounded-xl transition-colors  hover:text-teal-700  hover:border-teal-300 hover:border-t-2 text-gray-700 flex flex-row items-center border-t-1 border-gray-300 p-3 mb-4 pl-0 "
+        >
+          <IoAdd className="mx-4 mr-2 " style={{ iconColor }} size={24} />
           Create Category
         </div>
       </div>

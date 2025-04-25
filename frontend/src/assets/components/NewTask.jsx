@@ -22,6 +22,10 @@ function NewTask() {
   const { startDateTime, setStartDateTime } = useContext(TodoContext);
   const { endDateTime, setEndDateTime } = useContext(TodoContext);
 
+  const { totalCategories, setTotalCategories } = useContext(TodoContext);
+
+
+
   function taskTittleAndDes() {
     return (
       <>
@@ -85,15 +89,15 @@ function NewTask() {
       );
       // console.log(response.data.message);
       if (response.data.message == "Successfull") {
-        setCategory('Personal')
-        setDescription('')
-        setEndDateTime('')
-        setPriority('Low')
-        setStartDateTime('')
-        setSubtasks('')
-        setTitle('')
+        setCategory("Personal");
+        setDescription("");
+        setEndDateTime("");
+        setPriority("Low");
+        setStartDateTime("");
+        setSubtasks("");
+        setTitle("");
         navigate("/dashboard");
-        setBtnClikedTask(false)
+        setBtnClikedTask(false);
       }
     } catch (error) {
       console.log(error.response.data.message);
@@ -120,9 +124,9 @@ function NewTask() {
                   setCategory(e.target.value);
                 }}
               >
-                <option value="Personal">Personal</option>
-                <option value="Health">Health</option>
-                <option value="Learning">Learning</option>
+                {totalCategories.map((element) => (
+                  <option key={element} value={element}>{element}</option>
+                ))}
               </select>
             </div>
             <div className=" flex   py-4 pb-1 text-md font-medium text-gray-700 border-b border-gray-300">
@@ -170,7 +174,7 @@ function NewTask() {
         <div className="flex gap-4 mb-4  justify-end self-end  mx-4">
           <div
             onClick={() => {
-              setBtnClikedTask(false)
+              setBtnClikedTask(false);
               navigate("/dashboard");
             }}
             className="bg-gray-100 text-sm self-center cursor-pointer hover:bg-red-300 hover:border-red-400 transition  w-fit h-auto   px-6 border border-gray-200 rounded-xl py-3  font-semibold text-gray-700"
@@ -181,7 +185,6 @@ function NewTask() {
             onClick={() => {
               setBtnClikedTask(true);
               TaskCreateNew();
-              
             }}
             className="bg-teal-300 text-sm self-center cursor-pointer hover:bg-teal-400 border border-teal-300 hover:border-teal-800  transition  w-fit  px-6  rounded-xl py-3 font-semibold text-gray-800"
           >

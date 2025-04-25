@@ -19,7 +19,9 @@ function UpdateTask() {
   const { clickedIndex, setClickedIndex } = useContext(TodoContext);
   const { taskList, setTaskList } = useContext(TodoContext);
 
-  console.log(taskList[clickedIndex]);
+  const { totalCategories, setTotalCategories } = useContext(TodoContext);
+
+  // console.log(taskList[clickedIndex]);
   const currentTaskUpdate = taskList[clickedIndex];
   const [currentTitle, setCurrentTitle] = useState(currentTaskUpdate.title);
   const [currentDescription, setCurrentDescription] = useState(
@@ -133,9 +135,11 @@ function UpdateTask() {
                   setCurrentCategory(e.target.value);
                 }}
               >
-                <option value="Personal">Personal</option>
-                <option value="Health">Health</option>
-                <option value="Learning">Learning</option>
+                {totalCategories.map((element) => (
+                  <option key={element} value={element}>
+                    {element}
+                  </option>
+                ))}
               </select>
             </div>
             <div className=" flex   py-4 pb-1 text-md font-medium text-gray-700 border-b border-gray-300">
