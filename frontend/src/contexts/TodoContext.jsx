@@ -14,6 +14,9 @@ export const TodoContextProvider = ({ children }) => {
 
   const [btnClikedTask, setBtnClikedTask] = useState(false);
 
+   const [taskList, setTaskList] = useState([]);
+   const [clickedIndex, setClickedIndex] = useState('')
+
   
 
   const contextValue = {
@@ -32,7 +35,11 @@ export const TodoContextProvider = ({ children }) => {
     subtasks,
     setSubtasks,
     btnClikedTask,
-    setBtnClikedTask
+    setBtnClikedTask,
+    taskList,
+    setTaskList,
+    clickedIndex,
+    setClickedIndex
   };
 
   return (

@@ -1,17 +1,16 @@
 import React from "react";
 import Sidebar from "./sidebar";
 import Aiassist from "./Aiassist";
-import NewTask from "./NewTask";
+import UpdateTask from "./UpdateTask";
 
-function NewTaskDashboard() {
+function UpdateTaskDashboard() {
   return (
     <div className="flex bg-white h-dvh ">
       <Sidebar />
-
-      <NewTask />
+      <UpdateTask />
       <Aiassist />
     </div>
   );
 }
 
-export default NewTaskDashboard;
+export default UpdateTaskDashboard;

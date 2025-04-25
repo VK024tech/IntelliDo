@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
 import { FiTag } from "react-icons/fi";
 import { SlFlag } from "react-icons/sl";
@@ -6,14 +6,18 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdOutlineCalendarToday } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { TodoContext } from "../../contexts/TodoContext";
 
 function MainScreen() {
   const iconColor = "#aeabb6";
   let taskIcon = "#adadad";
+  let deleteEnter = false;
   const navigate = useNavigate();
-  const [taskList, setTaskList] = useState([]);
+  const { taskList, setTaskList } = useContext(TodoContext);
+  const { clickedIndex, setClickedIndex } = useContext(TodoContext);
+  const [taskCompleted, setTaskCompleted] = useState(false);
   const [updatedTaskList, setUpdatedTaskList] = useState(false);
-  
+  const [filterMethod, setFilterMethod] = useState("all");
 
   useEffect(() => {
     FetchTaskList();
@@ -69,23 +73,115 @@ function MainScreen() {
     }
   }
 
+  async function isCompleteTask(id) {
+    const token = sessionStorage.getItem("currentSession");
+
+    if (taskCompleted) {
+      setTaskCompleted(false);
+    } else {
+      setTaskCompleted(true);
+    }
+
+    try {
+      const response = await axios.put(
+        "http://localhost:3200/todo/update",
+        {
+          completed: taskCompleted,
+        },
+        {
+          headers: {
+            token: token,
+            todoid: id,
+          },
+        }
+      );
+      // console.log(response);
+      if (response.data.message == "todoUpdated") {
+        if (updatedTaskList) {
+          setUpdatedTaskList(false);
+        } else {
+          setUpdatedTaskList(true);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function Tasks() {
-    return taskList.map((task) => {
+    let tasks = [];
+
+    if (filterMethod !== "all") {
+      if (filterMethod == "active") {
+        tasks = taskList.filter((current) => current.completed == false);
+      } else if (filterMethod == "completed") {
+        tasks = taskList.filter((current) => current.completed == true);
+      }
+    } else {
+      tasks = taskList;
+    }
+
+    return tasks.map((task, index) => {
+      const dateTime = task.creationDate;
+      const newDateTime = new Date(dateTime);
+
+      const taskComplete = task.completed;
+
+      function categoryEmoji(type) {
+        const emojis = {
+          Personal: "🏠",
+          Health: "♥️",
+          Learning: "📖",
+          Work: "💼",
+          Custom: "📝",
+        };
+
+        return emojis[type] || emojis["Custom"];
+      }
+
       return (
         <div
           key={task._id}
           className="flex flex-row  justify-between cursor-pointer  hover:bg-gray-100 rounded-md py-2 px-2 pr-3 my-1 items-center font-medium text-gray-700 mx-6"
         >
           <div className="flex items-center gap-3">
-            <div className="border-2 p-2 w-fit hover:bg-teal-100 h-fit rounded-2xl border-teal-400 "></div>
-            <div>
-              {task.title}
-              <div className="flex gap-2 font-normal text-sm text-gray-500">
-                <div>
-                  <span>💼</span> {task.category}
+            <div
+              onClick={() => {
+                isCompleteTask(task._id);
+              }}
+              className={`border-2 p-2 w-fit  h-fit rounded-2xl  ${
+                taskComplete
+                  ? "bg-gray-300 border-gray-300"
+                  : "hover:bg-teal-100 border-teal-400"
+              } `}
+            ></div>
+            <div
+              onClick={() => {
+                setClickedIndex(index);
+                navigate("/dashboard/edittask");
+              }}
+            >
+              <div
+                className={`${
+                  taskComplete ? "line-through text-gray-400" : ""
+                }  `}
+              >
+                {task.title}
+              </div>
+              <div className="flex gap-5 font-normal text-sm text-gray-500">
+                <div
+                  className={`${
+                    taskComplete ? "text-gray-400 " : " text-gray-700"
+                  }`}
+                >
+                  <span>{categoryEmoji(task.category)}</span> {task.category}
                 </div>
-                <div>
-                  <span>🗓️</span> {task.creationDate}
+                <div
+                  className={`${
+                    taskComplete ? "text-gray-400 " : " text-gray-700"
+                  }`}
+                >
+                  <span>🗓️</span> {newDateTime.toLocaleString()}
                 </div>
               </div>
             </div>
@@ -107,11 +203,14 @@ function MainScreen() {
               size={17}
             />
             <RiDeleteBin6Line
+              onMouseEnter={() => {
+                deleteEnter = true;
+              }}
               onClick={() => {
                 deleteTodo(task._id);
               }}
               className="cursor-pointer "
-              style={{ color: taskIcon }}
+              style={{ color: deleteEnter ? taskIcon : "#eb4034" }}
               size={17}
             />
           </div>
@@ -126,14 +225,42 @@ function MainScreen() {
         Tasks
       </div>
       <div className="flex flex-col gap-5">
-        <div className="flex flex-row items-center gap-2 font-semibold px-6 mt-4 text-white">
-          <div className="p-1 border-1 border-teal-500  bg-teal-500 round rounded-md px-3 ">
+        <div className="flex flex-row items-center gap-2 font-semibold px-6 mt-4">
+          <div
+            onClick={() => {
+              setFilterMethod("all");
+              // FetchTaskList();
+            }}
+            className={`transition-all p-1 border-1 ${
+              filterMethod == "all"
+                ? " bg-teal-500  border-teal-500 text-white"
+                : "bg-white border-gray-300 text-gray-700"
+            }  round rounded-md px-3  `}
+          >
             All
           </div>
-          <div className="p-1 border-1 border-gray-300 text-gray-700  round rounded-md px-3 ">
+          <div
+            onClick={() => {
+              setFilterMethod("active");
+            }}
+            className={` transition-all p-1 border-1  ${
+              filterMethod == "active"
+                ? " bg-teal-500  border-teal-500 text-white"
+                : "bg-white border-gray-300 text-gray-700"
+            }  round rounded-md px-3`}
+          >
             Active
           </div>
-          <div className="p-1 border-1 border-gray-300 text-gray-700  round rounded-md px-3 ">
+          <div
+            onClick={() => {
+              setFilterMethod("completed");
+            }}
+            className={` transition-all p-1 border-1  ${
+              filterMethod == "completed"
+                ? " bg-teal-500  border-teal-500 text-white"
+                : "bg-white border-gray-300 text-gray-700"
+            }  round rounded-md px-3`}
+          >
             Completed
           </div>
         </div>

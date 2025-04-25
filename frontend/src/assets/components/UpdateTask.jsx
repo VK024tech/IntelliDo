@@ -8,34 +8,51 @@ import { useNavigate } from "react-router-dom";
 import { MdErrorOutline } from "react-icons/md";
 const errorColor = "#f24949";
 
-function NewTask() {
+function UpdateTask() {
   const navigate = useNavigate();
-
-  const { title, setTitle } = useContext(TodoContext);
-  const { description, setDescription } = useContext(TodoContext);
-  const { category, setCategory } = useContext(TodoContext);
-  const { priority, setPriority } = useContext(TodoContext);
-  const { subtasks, setSubtasks } = useContext(TodoContext);
 
   const { btnClikedTask, setBtnClikedTask } = useContext(TodoContext);
 
   const { startDateTime, setStartDateTime } = useContext(TodoContext);
   const { endDateTime, setEndDateTime } = useContext(TodoContext);
 
+  const { clickedIndex, setClickedIndex } = useContext(TodoContext);
+  const { taskList, setTaskList } = useContext(TodoContext);
+
+  console.log(taskList[clickedIndex]);
+  const currentTaskUpdate = taskList[clickedIndex];
+  const [currentTitle, setCurrentTitle] = useState(currentTaskUpdate.title);
+  const [currentDescription, setCurrentDescription] = useState(
+    currentTaskUpdate.description
+  );
+  const [currentCategory, setCurrentCategory] = useState(
+    currentTaskUpdate.category
+  );
+  const [currentPriority, setCurrentPriority] = useState(
+    currentTaskUpdate.priority
+  );
+  const [currentSubTasks, setCurrentSubTasks] = useState(
+    currentTaskUpdate.subtasks
+  );
+  const [currentCompleted, setCurrentCompleted] = useState(
+    currentTaskUpdate.completed
+  );
+
   function taskTittleAndDes() {
     return (
       <>
         <div className=" py-4 border-b flex border-gray-300">
           <input
+            value={currentTitle}
             onChange={(e) => {
-              setTitle(e.target.value);
+              setCurrentTitle(e.target.value);
               setBtnClikedTask(false);
             }}
             className=" outline-none  w-full h-full placeholder:font-medium"
             type="text"
             placeholder="Task title"
           />
-          {!title && btnClikedTask && (
+          {!currentTitle && btnClikedTask && (
             <MdErrorOutline style={{ color: errorColor }} size={24} />
           )}
         </div>
@@ -43,13 +60,14 @@ function NewTask() {
           <textarea
             className="outline-none field-sizing-content min-h-[100px]  w-full h-full placeholder:font-medium"
             type="text"
+            value={currentDescription}
             onChange={(e) => {
-              setDescription(e.target.value);
+              setCurrentDescription(e.target.value);
               setBtnClikedTask(false);
             }}
             placeholder="Description"
           />
-          {!description && btnClikedTask && (
+          {!currentDescription && btnClikedTask && (
             <MdErrorOutline style={{ color: errorColor }} size={24} />
           )}
         </div>
@@ -57,46 +75,40 @@ function NewTask() {
     );
   }
 
-  async function TaskCreateNew() {
-    if (!title || !description) {
+  async function TaskUpdateExisting() {
+    if (!currentTitle || !currentDescription) {
       return;
     }
 
     const token = sessionStorage.getItem("currentSession");
 
     try {
-      const response = await axios.post(
-        "http://localhost:3200/todo/add",
+      const response = await axios.put(
+        "http://localhost:3200/todo/update",
         {
-          title: title,
-          priority: priority,
-          completed: "false",
-          creationDate: startDateTime,
-          endDate: endDateTime,
-          description: description,
-          subtasks: subtasks,
-          category: category,
+          title: currentTitle,
+          priority: currentPriority,
+          completed: currentCompleted,
+          // creationDate: startDateTime,
+          // endDate: endDateTime,
+          description: currentDescription,
+          subtasks: currentSubTasks,
+          category: currentCategory,
         },
         {
           headers: {
             token: token,
+            todoid: currentTaskUpdate._id,
           },
         }
       );
-      // console.log(response.data.message);
-      if (response.data.message == "Successfull") {
-        setCategory('Personal')
-        setDescription('')
-        setEndDateTime('')
-        setPriority('Low')
-        setStartDateTime('')
-        setSubtasks('')
-        setTitle('')
+      console.log(response);
+      if (response.data.message == "todoUpdated") {
         navigate("/dashboard");
-        setBtnClikedTask(false)
+        setBtnClikedTask(false);
       }
     } catch (error) {
-      console.log(error.response.data.message);
+      console.log(error.response);
     }
   }
 
@@ -105,7 +117,7 @@ function NewTask() {
       <div className="flex flex-col h-dvh justify-center items-center ">
         <div className="h-full w-full min-h-fit min-w-fit bg-white px-4 rounded-2xl pb-2   py-8">
           <div className="font-bold text-xl   text-gray-800  pb-1 border-b-1 border-gray-300">
-            New task
+            Edit task
           </div>
           {taskTittleAndDes()}
 
@@ -116,8 +128,9 @@ function NewTask() {
                 className="ml-auto  pr-4 hover:bg-gray-200 rounded-md py-1 px-1"
                 name="Category"
                 id="Category"
+                value={currentCategory}
                 onChange={(e) => {
-                  setCategory(e.target.value);
+                  setCurrentCategory(e.target.value);
                 }}
               >
                 <option value="Personal">Personal</option>
@@ -128,8 +141,9 @@ function NewTask() {
             <div className=" flex   py-4 pb-1 text-md font-medium text-gray-700 border-b border-gray-300">
               <div className="py-1 pl-0 px-1">Priority</div>
               <select
+                value={currentPriority}
                 onChange={(e) => {
-                  setPriority(e.target.value);
+                  setCurrentPriority(e.target.value);
                 }}
                 className="ml-auto  pr-4 hover:bg-gray-200 rounded-md py-1 px-1"
                 name="Priority"
@@ -140,7 +154,7 @@ function NewTask() {
                 <option value="High">High</option>
               </select>
             </div>
-            <div className=" flex justify-center items-center  py-2 pb-1 text-md font-medium text-gray-700 border-b border-gray-300">
+            {/* <div className=" flex justify-center items-center  py-2 pb-1 text-md font-medium text-gray-700 border-b border-gray-300">
               <div className="py-1 pl-0 px-1">Start date & time</div>
               <div className="ml-auto mr-2 ">
                 <StartDateTime />
@@ -151,14 +165,15 @@ function NewTask() {
               <div className="ml-auto mr-2 ">
                 <EndDateTime />
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="mt-4">
             <div className="text-xl font-semibold">Subtasks:</div>
             <div className=" py-4 border-b border-gray-300">
               <textarea
+                value={currentSubTasks}
                 onChange={(e) => {
-                  setSubtasks(e.target.value);
+                  setCurrentSubTasks(e.target.value);
                 }}
                 className="outline-none field-sizing-content min-h-[150px] w-full h-full placeholder:font-medium"
                 type="text"
@@ -170,7 +185,7 @@ function NewTask() {
         <div className="flex gap-4 mb-4  justify-end self-end  mx-4">
           <div
             onClick={() => {
-              setBtnClikedTask(false)
+              setBtnClikedTask(false);
               navigate("/dashboard");
             }}
             className="bg-gray-100 text-sm self-center cursor-pointer hover:bg-red-300 hover:border-red-400 transition  w-fit h-auto   px-6 border border-gray-200 rounded-xl py-3  font-semibold text-gray-700"
@@ -180,12 +195,11 @@ function NewTask() {
           <div
             onClick={() => {
               setBtnClikedTask(true);
-              TaskCreateNew();
-              
+              TaskUpdateExisting();
             }}
             className="bg-teal-300 text-sm self-center cursor-pointer hover:bg-teal-400 border border-teal-300 hover:border-teal-800  transition  w-fit  px-6  rounded-xl py-3 font-semibold text-gray-800"
           >
-            Create Task
+            Update task
           </div>
         </div>
       </div>
@@ -193,4 +207,4 @@ function NewTask() {
   );
 }
 
-export default NewTask;
+export default UpdateTask;
