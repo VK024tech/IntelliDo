@@ -19,6 +19,9 @@ const bcrypt = require("bcrypt");
 //jsonwebtoken for authentication
 const jwt = require("jsonwebtoken");
 
+//import auth middleware
+const { authMiddleware } = require("../middleware/authenticate");
+
 //schema for validation
 const signUpZod = z.object({
   name: z.string(),
@@ -40,11 +43,11 @@ router.post("/signup", async (req, res) => {
   const validate = signUpZod.safeParse(userInfo);
 
   const existingUser = await user.findOne({
-    email: userInfo.email
-  })
+    email: userInfo.email,
+  });
 
-  if(existingUser){
-    return res.status(400).send('Email already exists, Please SignIn!');
+  if (existingUser) {
+    return res.status(400).send("Email already exists, Please SignIn!");
   }
 
   if (!validate.success) {
@@ -64,9 +67,9 @@ router.post("/signup", async (req, res) => {
     return res.status(400).send(error);
   }
 
- res.json({
-  msg: "signedUp"
- })
+  res.json({
+    msg: "signedUp",
+  });
 });
 
 //route for signin
@@ -84,7 +87,7 @@ router.post("/signin", async (req, res) => {
 
   if (!foundUser) {
     return res.status(400).json({
-      message: "No account available with this email!",
+      message: "No account with this email, Sign up!",
     });
   }
 
@@ -114,7 +117,67 @@ router.post("/signout", async (req, res) => {
   const userToken = req.headers.token;
 });
 
+//route for adding categories
+router.post("/addcategory", authMiddleware, async (req, res) => {
+  const userCategory = req.body;
+  const userId = req.headers.userId;
+  console.log(userCategory);
 
+  try {
+    await user.findByIdAndUpdate(userId, {
+      totalCategories: userCategory.totalCategories,
+    });
 
+    res.json({
+      message: "Successfull created category",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      message: "Error while creating category",
+    });
+  }
+});
+
+//route for fetching categories
+router.get("/allcategories", authMiddleware, async (req, res) => {
+  
+  const userId = req.headers.userId;
+  
+  try {
+    if (
+      await user.findOne({
+        _id: userId,
+      })
+    ) {
+      try {
+        const currUser = await user.findOne({
+          _id: userId,
+        });
+
+        console.log(currUser)
+
+        return res.json({
+          message: "categories fetched",
+          allCategories: currUser.totalCategories,
+        });
+      } catch (error) {
+        console.log(error);
+        return res.json({
+          message: "No categories found for the user",
+        });
+      }
+    } else {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      message: "Somehting went wrong",
+    });
+  }
+});
 
 module.exports = router;

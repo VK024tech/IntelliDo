@@ -12,6 +12,7 @@ const userSchema = new schema({
     picture: String,
     accessToken: String,
     refreshToken: String,
+    totalCategories: Array
 })
 
 
@@ -19,10 +20,14 @@ const userSchema = new schema({
 const todoSchema = new schema({
     userId: obejctid,
     title: String,
+    description: String,
+    subtasks: String,
     priority: String,
+    category: String,
     completed: Boolean,
-    creationDate: Date,
-    endDate: Date,
+    creationDate: String,
+    endDate: String,
+    
 })
 
 

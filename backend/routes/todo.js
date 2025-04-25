@@ -20,10 +20,15 @@ const jwt = require("jsonwebtoken");
 router.post("/add", authMiddleware, async (req, res) => {
   const userTodo = req.body;
 
+  console.log(userTodo)
+
   try {
     await todo.create({
       userId: req.headers.userId,
       title: userTodo.title,
+      description: userTodo.description,
+      subtasks: userTodo.subtasks,
+      category: userTodo.category,
       priority: userTodo.priority,
       completed: userTodo.completed,
       creationDate: userTodo.creationDate,
@@ -43,7 +48,7 @@ router.post("/add", authMiddleware, async (req, res) => {
     });
 
     res.json({
-      msg: "Successfull",
+      message: "Successfull",
       todoId: addedTodo._id,
     });
   } catch (error) {
@@ -63,6 +68,9 @@ router.put("/update", authMiddleware, async (req, res) => {
     await todo.findByIdAndUpdate(todoId, {
       title: userTodo?.title,
       priority: userTodo?.priority,
+      description: userTodo?.description,
+      subtasks: userTodo?.subtasks,
+      category: userTodo.category,
       completed: userTodo?.completed,
       creationDate: userTodo?.creationDate,
       endDate: userTodo?.endDate,
@@ -75,7 +83,7 @@ router.put("/update", authMiddleware, async (req, res) => {
   }
 
   res.json({
-    msg: "todoUpdated",
+    message: "todoUpdated",
   });
 });
 
@@ -99,7 +107,7 @@ router.delete("/delete", authMiddleware, async (req, res) => {
   }
 
   res.json({
-    msg: "todoDeleted",
+    message: "todoDeleted",
   });
 });
 
@@ -119,7 +127,7 @@ router.get("/todolist", authMiddleware, async (req, res) => {
         });
 
         return res.json({
-          msg: "todoList fetched",
+          message: "todoList fetched",
           todoList: todoArray,
         });
       } catch (error) {
@@ -140,4 +148,8 @@ router.get("/todolist", authMiddleware, async (req, res) => {
     });
   }
 });
+
+
+
+
 module.exports = router;
