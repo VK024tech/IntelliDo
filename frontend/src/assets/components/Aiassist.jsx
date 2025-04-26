@@ -1,14 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { WiStars } from "react-icons/wi";
 import { LuRefreshCw } from "react-icons/lu";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 
+import axios from "axios";
+
 function Aiassist() {
   const iconColor = "#aeabb6";
+  let suggestedTask = [];
 
-  function Suggestions() {
+  useEffect(() => {
+    suggestedTask = async () => {
+      await fetchSuggestions();
+    };
+  }, []);
+
+  async function fetchSuggestions() {
+    const token = sessionStorage.getItem("currentSession");
+
+    try {
+      const response = await axios.get("http://localhost:3200/connect/gemini", {
+        headers: {
+          token: token,
+        },
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+   function Suggestions() {
     return (
       <div className="flex bg-white p-2 py-4 rounded-xl border-1 border-gray-300">
         <FaWandMagicSparkles
@@ -17,7 +41,7 @@ function Aiassist() {
           className="m-1"
         />
         <div className="ml-4">
-          Break down 'Complete project proporsal' into smaller tasks.
+          {/* {current.TaskName} */}
           <div className="flex justify-start gap-4 mt-2">
             <div className="flex  flex-row cursor-pointer transition-colors  hover:shadow-md/30  shadow-teal-200 border-1 rounded-md w-max p-1 px-3 justify-center border-teal-500 text-teal-600 ">
               <IoIosAddCircleOutline
@@ -33,7 +57,7 @@ function Aiassist() {
           </div>
         </div>
       </div>
-    );
+   )
   }
 
   return (
@@ -49,9 +73,7 @@ function Aiassist() {
         {Suggestions()}
         {Suggestions()}
         {Suggestions()}
-        <div className="mb-24">
-        {Suggestions()}
-        </div>
+        <div className="mb-24">{Suggestions()}</div>
         <div className="fixed bottom-0 bg-gray-100 px-16.5 py-4 ">
           <div className="flex justify-center font-md text-gray-600   items-center bg-white p-2 cursor-pointer transition-colors  hover:text-teal-700  hover:border-teal-300 hover:border-t-2 rounded-xl border-t-1 border-gray-300">
             <LuRefreshCw

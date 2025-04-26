@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { IoAdd } from "react-icons/io5";
 import { FiTag } from "react-icons/fi";
 import { SlFlag } from "react-icons/sl";
@@ -51,41 +51,32 @@ function MainScreen() {
   }
 
   async function deleteTodo(id) {
-    if (confirm("Are you sure?")) {
-      const token = sessionStorage.getItem("currentSession");
-      if (!token) {
-        alert("Something went Wrong, Please Sign in again!");
-        return;
-      }
+    const token = sessionStorage.getItem("currentSession");
+    if (!token) {
+      alert("Something went Wrong, Please Sign in again!");
+      return;
+    }
 
-      try {
-        const response = await axios.delete(
-          "http://localhost:3200/todo/delete",
-          {
-            headers: {
-              token: token,
-              todoid: id,
-            },
-          }
-        );
-        // console.log(response);
-        if (response.data.message == "todoDeleted") {
-          setUpdatedTaskList(true);
-        }
-      } catch (error) {
-        console.log(error);
+    try {
+      const response = await axios.delete("http://localhost:3200/todo/delete", {
+        headers: {
+          token: token,
+          todoid: id,
+        },
+      });
+      // console.log(response);
+      if (response.data.message == "todoDeleted") {
+        setUpdatedTaskList(true);
       }
+    } catch (error) {
+      console.log(error);
     }
   }
 
   async function isCompleteTask(id) {
     const token = sessionStorage.getItem("currentSession");
 
-    if (taskCompleted) {
-      setTaskCompleted(false);
-    } else {
-      setTaskCompleted(true);
-    }
+    setTaskCompleted(!taskCompleted);
 
     try {
       const response = await axios.put(
@@ -112,6 +103,12 @@ function MainScreen() {
       console.log(error);
     }
   }
+
+
+  ///use effect to trigger render when taskcompleted changes without this first time render was not happening 
+  useEffect(() => {
+    Tasks();
+  }, [taskCompleted]);
 
   function Tasks() {
     let dateFilter = [];
@@ -269,7 +266,7 @@ function MainScreen() {
               setFilterMethod("all");
               // FetchTaskList();
             }}
-            className={`transition-all p-1 border-1 ${
+            className={`transition-all p-1 border-1 cursor-pointer ${
               filterMethod == "all"
                 ? " bg-teal-500  border-teal-500 text-white"
                 : "bg-white border-gray-300 text-gray-700"
@@ -281,7 +278,7 @@ function MainScreen() {
             onClick={() => {
               setFilterMethod("active");
             }}
-            className={` transition-all p-1 border-1  ${
+            className={` transition-all p-1 border-1  cursor-pointer  ${
               filterMethod == "active"
                 ? " bg-teal-500  border-teal-500 text-white"
                 : "bg-white border-gray-300 text-gray-700"
@@ -293,7 +290,7 @@ function MainScreen() {
             onClick={() => {
               setFilterMethod("completed");
             }}
-            className={` transition-all p-1 border-1  ${
+            className={` transition-all p-1 border-1  cursor-pointer ${
               filterMethod == "completed"
                 ? " bg-teal-500  border-teal-500 text-white"
                 : "bg-white border-gray-300 text-gray-700"

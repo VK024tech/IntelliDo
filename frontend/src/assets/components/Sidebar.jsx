@@ -5,9 +5,11 @@ import { BsSuitcaseLg } from "react-icons/bs";
 import { FaRegHeart } from "react-icons/fa";
 import { MdDoubleArrow } from "react-icons/md";
 import { WiMoonAltNew } from "react-icons/wi";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 import axios from "axios";
 import { TodoContext } from "../../contexts/TodoContext";
+import UserPrompt from "./Popups/UserPrompt";
 
 function Sidebar() {
   const iconColor = "#aeabb6";
@@ -15,7 +17,13 @@ function Sidebar() {
   const { totalCategories, setTotalCategories } = useContext(TodoContext);
 
   const { selectedCategory, setSelectedCategory } = useContext(TodoContext);
-  const {dateBasedFilter, setDateBasedFilter} = useContext(TodoContext);
+  const { dateBasedFilter, setDateBasedFilter } = useContext(TodoContext);
+
+  const { promptOpen, setPromptOpen } = useContext(TodoContext);
+  const { promptValue, setPromptvalue } = useContext(TodoContext);
+
+  //promise for await on user input prompt
+  const { getUserInput } = useContext(TodoContext);
 
   useEffect(() => {
     fetchAllCategories();
@@ -48,9 +56,16 @@ function Sidebar() {
   }
 
   async function addNewCategory() {
-    const CategoryName = prompt("Category name:", "");
+    let CategoryName = "";
+
+    try {
+      CategoryName = await getUserInput();
+    } catch (error) {
+      console.log(error);
+    }
+
     if (!CategoryName || CategoryName.trim() == "") {
-      alert("Category name cannot be empty!");
+      console.log("Cancel");
       return;
     }
 
@@ -77,6 +92,8 @@ function Sidebar() {
       if (response.data.message == "Successfull created category") {
         console.log("done");
       }
+
+      fetchAllCategories();
     } catch (error) {
       console.log(error);
     }
@@ -177,7 +194,10 @@ function Sidebar() {
         <WiMoonAltNew
           style={{
             color: `${
-              selectedCategory == "Health" || "Learning" || "Personal" || "work"
+              selectedCategory == "Health" ||
+              selectedCategory == "Learning" ||
+              selectedCategory == "Personal" ||
+              selectedCategory == "work"
                 ? ""
                 : "#fffff"
             }`,
@@ -191,24 +211,40 @@ function Sidebar() {
     return totalCategories.map((category, index) => {
       return (
         <div
-          onClick={() => {
-            if (selectedCategory !== category) {
-              setSelectedCategory(category);
-              console.log(selectedCategory);
-            } else {
-              setSelectedCategory("");
-              console.log(selectedCategory);
-            }
-          }}
           key={category}
           className={`cursor-pointer transition  rounded-xl text-gray-700 ${
             selectedCategory == category
               ? "bg-teal-500 text-white "
               : "hover:bg-gray-200"
-          }  flex flex-row items-center px-3 py-2`}
+          }  flex flex-row items-center px-3 py-2 justify-between`}
         >
-          {categoryIcons[category] || categoryIcons["Custom"]}
-          {category}
+          <div
+            onClick={() => {
+              if (selectedCategory !== category) {
+                setSelectedCategory(category);
+                console.log(selectedCategory);
+              } else {
+                setSelectedCategory("");
+                console.log(selectedCategory);
+              }
+            }}
+            key={category}
+            className=" flex flex-row items-center w-full"
+          >
+            {categoryIcons[category] || categoryIcons["Custom"]}
+            {category}
+          </div>
+          {/* <div>
+            <RiDeleteBin6Line
+              onClick={() => {
+                deleteTodo(task._id);
+              }}
+              className={`  rounded-xl text-gray-700 ${
+                selectedCategory == category ? "text-red-400  bg-red-300  " : "hidden "
+              }   `}
+              size={17}
+            />
+          </div> */}
         </div>
       );
     });
@@ -217,8 +253,8 @@ function Sidebar() {
   function category() {
     return (
       <>
-        <div className="pl-2">
-          <div className="text-gray-700 pb-1  font-semibold flex flex-row items-center justify-between">
+        <div className="pl-2  ">
+          <div className="text-gray-700 pb-1   font-semibold flex flex-row items-center justify-between">
             Category
             {/* <IoAdd
               className="cursor-pointer hover:bg-gray-200 rounded-sm "
@@ -226,6 +262,7 @@ function Sidebar() {
               size={24}
             /> */}
           </div>
+
           {DynamicCategoryArray()}
         </div>
       </>
@@ -233,7 +270,7 @@ function Sidebar() {
   }
 
   return (
-    <div className="bg-gray-100 max-w-[16rem] w-full h-dvh px-3  border-r-1 border-gray-300">
+    <div className="bg-gray-100 max-w-[16rem] w-full h-dvh px-3   border-r-1 border-gray-300">
       <div className="flex flex-col justify-between h-full">
         <div>
           <div className="text-2xl py-2 pb-8 font-bold text-gray-900">
@@ -249,7 +286,6 @@ function Sidebar() {
         <div
           onClick={() => {
             addNewCategory();
-            fetchAllCategories();
           }}
           className="cursor-pointer  bg-white rounded-xl transition-colors  hover:text-teal-700  hover:border-teal-300 hover:border-t-2 text-gray-700 flex flex-row items-center border-t-1 border-gray-300 p-3 mb-4 pl-0 "
         >

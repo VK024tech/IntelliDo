@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useRef, useState } from "react";
 
 export const TodoContext = createContext();
 
@@ -18,16 +18,31 @@ export const TodoContextProvider = ({ children }) => {
   const [clickedIndex, setClickedIndex] = useState("");
 
   const [totalCategories, setTotalCategories] = useState([
-      "Personal",
-      "Work",
-      "Health",
-      "Learning",
-    ]);
+    "Personal",
+    "Work",
+    "Health",
+    "Learning",
+  ]);
 
-     const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState("");
 
-       const [dateBasedFilter, setDateBasedFilter] = useState("");
+  const [dateBasedFilter, setDateBasedFilter] = useState("");
 
+  const [promptOpen, setPromptOpen] = useState(false);
+
+  const [promptValue, setPromptvalue] = useState("");
+  const [promptPromise, setPromptPromise] = useState();
+
+  const resolveRef = useRef(null);
+  const rejectRef = useRef(null);
+
+  const getUserInput = () => {
+    setPromptOpen(true);
+    return new Promise((resolve, reject) => {
+      resolveRef.current = resolve;
+      rejectRef.current = reject;
+    });
+  };
 
   const contextValue = {
     startDateTime,
@@ -55,7 +70,15 @@ export const TodoContextProvider = ({ children }) => {
     selectedCategory,
     setSelectedCategory,
     dateBasedFilter,
-    setDateBasedFilter
+    setDateBasedFilter,
+    promptOpen,
+    setPromptOpen,
+    promptValue,
+    setPromptvalue,
+    promptPromise,
+    setPromptPromise,
+    getUserInput,
+    resolveRef,
   };
 
   return (
