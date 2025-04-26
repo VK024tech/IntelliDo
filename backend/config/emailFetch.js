@@ -71,8 +71,8 @@ async function getFullMessage(accessToken) {
     }
   }
 
-  console.log('messages are')
-  console.log(emails);
+  // console.log('messages are')
+  // console.log(emails);
   return emails
 }
 

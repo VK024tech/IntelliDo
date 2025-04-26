@@ -16,6 +16,7 @@ app.use(cors());
 const userRoutes = require("./routes/user");
 const todoRoutes = require("./routes/todo");
 const authRoutes = require("./routes/oAuth");
+const geminiRoutes = require('./routes/geminiFetch')
 
 //request object as a json object
 app.use(express.json());
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use("/user", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/todo", todoRoutes);
+app.use("/connect", geminiRoutes);
 
 async function ServerStart() {
   await mongoose.connect(process.env.MONGODB);

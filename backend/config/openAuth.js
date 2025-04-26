@@ -51,7 +51,7 @@ passport.use(
         ///jwt creation for newuser
         const token = jwt.sign(
           {
-            userId: newUser.googleID,
+            userId: newUser._id,
           },
           process.env.SECRET
         );
@@ -74,7 +74,7 @@ passport.use(
         ///jwt creation for existinguser
         const token = jwt.sign(
           {
-            userId: existinguser.googleID,
+            userId: existinguser._id,
           },
           process.env.SECRET
         );
@@ -89,7 +89,7 @@ passport.use(
         ///jwt creation for existinguser
         const token = jwt.sign(
           {
-            userId: existinguser.googleID,
+            userId: existinguser._id,
           },
           process.env.SECRET
         );

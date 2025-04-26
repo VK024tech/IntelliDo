@@ -20,7 +20,7 @@ const jwt = require("jsonwebtoken");
 router.post("/add", authMiddleware, async (req, res) => {
   const userTodo = req.body;
 
-  console.log(userTodo)
+  console.log(userTodo);
 
   try {
     await todo.create({
@@ -148,8 +148,5 @@ router.get("/todolist", authMiddleware, async (req, res) => {
     });
   }
 });
-
-
-
 
 module.exports = router;

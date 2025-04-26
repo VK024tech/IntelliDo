@@ -56,7 +56,7 @@ router.get("/emails", authMiddleware, async (req, res) => {
   try {
     const userID = req.headers.userId;
     const getUser = await user.findOne({
-      googleID: userID,
+    _id: userID,
     });
 
     const accessToken = getUser.accessToken;
@@ -74,13 +74,13 @@ router.get("/refreshToken", authMiddleware, async (req, res) => {
   try {
     const userID = req.headers.userId;
     const getUser = await user.findOne({
-      googleID: userID,
+      _id: userID,
     });
 
-    const newtoken = await reload.refreshToken(getUser.refreshToken, userID);
+    const newtoken = await reload.refreshToken(getUser.refreshToken, getUser.googleID);
     console.log(newtoken);
 
-    res.json(messages);
+    res.json(newtoken);
   } catch (error) {
     res.status(500).json({
       error: error,
