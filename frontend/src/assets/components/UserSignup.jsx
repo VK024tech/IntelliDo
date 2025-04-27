@@ -16,8 +16,7 @@ export default function UserSign() {
 
   ///password
   const { userPassword, setuserPassword } = useContext(UserContext);
-  const { confirmUserPassword, setConfirmUserPassword } =
-    useContext(UserContext);
+  const { confirmUserPassword, setConfirmUserPassword } = useContext(UserContext);
   const { type, setType } = useContext(UserContext);
   const { eye, setEye } = useContext(UserContext);
 
@@ -29,6 +28,7 @@ export default function UserSign() {
   const emailColor = { fill: activeEmail ? "#6a7282" : "#00D5BE" };
   const passwordColor = { fill: activePassword ? "#6a7282" : "#00D5BE" };
 
+  ///password eye icon toggle on off
   function passwordIcon() {
     if (!eye) {
       return <LiaEyeSolid style={passwordColor} size={24} />;
@@ -37,6 +37,8 @@ export default function UserSign() {
     }
   }
 
+
+  // password toggle to show and hide password
   function visiblityToggle() {
     if (!eye) {
       setType("password");
@@ -51,6 +53,7 @@ export default function UserSign() {
   const { emailError, setEmailError } = useContext(UserContext);
   const { userNameError, setUserNameError } = useContext(UserContext);
 
+  // sign up button function 
   async function signupButton() {
     ////form validation check
     const regex =
@@ -92,6 +95,7 @@ export default function UserSign() {
     }
   }
 
+// api call to backend to create new account
   async function SignUpUser() {
     const response = await axios.post("http://localhost:3200/user/signup", {
       name: userName,
@@ -103,6 +107,7 @@ export default function UserSign() {
     return response;
   }
 
+  // sign up route for google oauth
   async function signUpWithGoogle() {
     // const response = await axios.get("http://localhost:3200/auth/google");
     window.location.href = "http://localhost:3200/auth/google";
@@ -110,6 +115,7 @@ export default function UserSign() {
     // return response;
   }
 
+  //user name component
   function componentUserName() {
     return (
       <div className="mb-2">
@@ -145,6 +151,7 @@ export default function UserSign() {
     );
   }
 
+    //user email component
   function componentUserEmail() {
     return (
       <div className="mb-2">
@@ -180,6 +187,7 @@ export default function UserSign() {
     );
   }
 
+    //user password component
   function componentUserPassword() {
     return (
       <>
@@ -238,6 +246,8 @@ export default function UserSign() {
     );
   }
 
+
+  
   return (
     <div className="bg-gradient-to-r from-teal-100 to-teal-50 w-screen h-screen p-12">
       <div className="bg-white w-auto flex flex-row justify-center rounded-2xl shadow-lg shadow-teal-200  items-center h-full py-8 pl-8 [@media(width<1240px)]:mx-20 md:mx-50">

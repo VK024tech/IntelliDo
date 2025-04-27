@@ -79,6 +79,7 @@ function UpdateTask() {
     );
   }
 
+  //update of task and saving it in database
   async function TaskUpdateExisting() {
     if (!currentTitle || !currentDescription) {
       return;
@@ -117,6 +118,7 @@ function UpdateTask() {
     }
   }
 
+  
   return (
     <div className="w-screen h-dvh overflow-y-auto ">
       <div className="flex flex-col h-dvh justify-center items-center ">

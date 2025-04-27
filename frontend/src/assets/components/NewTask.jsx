@@ -26,6 +26,8 @@ function NewTask() {
 
 const { currentScreen, setCurrentScreen } = useContext(TodoContext);
 
+
+///task tittle and des 
   function taskTittleAndDes() {
     return (
       <>
@@ -61,6 +63,8 @@ const { currentScreen, setCurrentScreen } = useContext(TodoContext);
     );
   }
 
+
+  //new task creation iand saving it in database
   async function TaskCreateNew() {
     if (!title || !description) {
       return;
@@ -105,6 +109,8 @@ const { currentScreen, setCurrentScreen } = useContext(TodoContext);
     }
   }
 
+
+  
   return (
     <div className="w-screen h-dvh overflow-y-auto ">
       <div className="flex flex-col h-dvh justify-center items-center ">

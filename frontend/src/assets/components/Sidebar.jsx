@@ -11,6 +11,7 @@ import axios from "axios";
 import { TodoContext } from "../../contexts/TodoContext";
 import UserPrompt from "./Popups/UserPrompt";
 
+
 function Sidebar() {
   const iconColor = "#aeabb6";
 
@@ -25,10 +26,13 @@ function Sidebar() {
   //promise for await on user input prompt
   const { getUserInput } = useContext(TodoContext);
 
+
+//for fetching all categories on mount of component
   useEffect(() => {
     fetchAllCategories();
   }, []);
 
+  ///catogory fetching logic
   async function fetchAllCategories() {
     const token = sessionStorage.getItem("currentSession");
     if (!token) {
@@ -55,6 +59,7 @@ function Sidebar() {
     }
   }
 
+  //creating new catogory logic and saving it in database
   async function addNewCategory() {
     let CategoryName = "";
 
@@ -99,6 +104,7 @@ function Sidebar() {
     }
   }
 
+  
   function Menu() {
     return (
       <>
@@ -156,6 +162,8 @@ function Sidebar() {
     );
   }
 
+
+  ///dynamicly giving every catogory a icon and rendering it on screen
   function DynamicCategoryArray() {
     const categoryIcons = {
       Work: (
@@ -250,6 +258,7 @@ function Sidebar() {
     });
   }
 
+  //catogry array rendering
   function category() {
     return (
       <>
@@ -269,6 +278,7 @@ function Sidebar() {
     );
   }
 
+  
   return (
     <div className="bg-gray-100 max-w-[16rem] w-full h-dvh px-3   border-r-1 border-gray-300">
       <div className="flex flex-col justify-between h-full">

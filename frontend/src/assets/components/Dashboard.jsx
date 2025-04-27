@@ -26,6 +26,7 @@ function Dashboard() {
     }
   }, []);
 
+  ///conditional rendering of components
   function middleScreen() {
     if (currentScreen == "main") {
       return <MainScreen />;

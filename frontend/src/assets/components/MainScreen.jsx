@@ -29,10 +29,12 @@ function MainScreen() {
 
     const { currentScreen, setCurrentScreen } = useContext(TodoContext);
 
+   //for detching task list form database on update of tasks
   useEffect(() => {
     FetchTaskList();
   }, [updatedTaskList, suggestedTask]);
 
+  //fetch task function to get the data form database
   async function FetchTaskList() {
     const token = sessionStorage.getItem("currentSession");
     if (!token) {
@@ -55,6 +57,8 @@ function MainScreen() {
     }
   }
 
+
+  ///route for task deletion from database
   async function deleteTodo(id) {
     const token = sessionStorage.getItem("currentSession");
     if (!token) {
@@ -78,6 +82,8 @@ function MainScreen() {
     }
   }
 
+
+  //for updating task if it is completed or not
   async function isCompleteTask(id) {
     const token = sessionStorage.getItem("currentSession");
 
@@ -112,6 +118,7 @@ function MainScreen() {
     Tasks();
   }, [taskCompleted]);
 
+  //all tasks render on screen with filtering logic for tasks
   function Tasks() {
     let dateFilter = [];
 
@@ -224,7 +231,7 @@ function MainScreen() {
                   <span>🗓️</span> {newDateTime.toLocaleString()}
                 </div>
                 <div
-                  className={`bg-gray-50 rounded-xl px-2 ${
+                  className={`bg-gray-50 h-fit rounded-xl px-2 ${
                     task.priority === "High"
                       ? "text-red-400"
                       : task.priority === "Medium"

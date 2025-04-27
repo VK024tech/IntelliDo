@@ -26,6 +26,7 @@ function UserLogin() {
   const emailColor = { fill: activeEmail ? "#6a7282" : "#00D5BE" };
   const passwordColor = { fill: activePassword ? "#6a7282" : "#00D5BE" };
 
+    ///password eye icon toggle on off
   function passwordIcon() {
     if (!eye) {
       return <LiaEyeSolid style={passwordColor} size={24} />;
@@ -34,10 +35,12 @@ function UserLogin() {
     }
   }
 
+   // sign up route for google oauth
   async function signInWithGoogle() {
     window.location.href = "http://localhost:3200/auth/google";
   }
 
+  //api call to sign in user
   async function SignInUser() {
     const response = await axios.post("http://localhost:3200/user/signin", {
       email: userEmail,
@@ -47,6 +50,8 @@ function UserLogin() {
     return response;
   }
 
+
+  //signin button function
   async function signInButton() {
     ////form validation check
 
@@ -82,6 +87,7 @@ function UserLogin() {
     }
   }
 
+  //password hide and unhide toggele
   function visiblityToggle() {
     if (!eye) {
       setType("password");
@@ -92,6 +98,7 @@ function UserLogin() {
     }
   }
 
+  // user password component
   function componentUserPassword() {
     return (
       <>
@@ -135,6 +142,7 @@ function UserLogin() {
     );
   }
 
+  //user email component
   function componentUserEmail() {
     return (
       <div className="mb-2">
@@ -170,6 +178,7 @@ function UserLogin() {
     );
   }
 
+  
   return (
     <div className="bg-gradient-to-r from-teal-100 to-teal-50 w-screen h-screen p-12">
       <div className="bg-white w-auto flex flex-row justify-center rounded-2xl shadow-lg shadow-teal-200  items-center h-full py-8 pl-8 [@media(width<1240px)]:mx-20 md:mx-50">

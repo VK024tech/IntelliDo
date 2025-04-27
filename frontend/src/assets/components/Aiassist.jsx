@@ -13,20 +13,25 @@ function Aiassist() {
   const iconColor = "#aeabb6";
 
   const { suggestedTask, setSuggestedTask } = useContext(TodoContext);
-  const [refreshTasks, setRefreshTask] = useState(false);
+ 
 
+  //for fetching suggestion only on intial render
   const hasMounted = useRef(false);
 
+  //fetching suggestion on mount of component
   useEffect(() => {
     if (!hasMounted.current) {
       fetchSuggestions();
     }
   }, []);
 
+  //updating ui on addition or removal of suggestion 
   useEffect(() => {
     Suggestions();
   }, [suggestedTask]);
 
+
+  //api call for updating token to be able use suggestion feature
   async function RefreshToken() {
     const token = sessionStorage.getItem("currentSession");
 
@@ -49,6 +54,7 @@ function Aiassist() {
     }
   }
 
+  ///adding suggested task to user task list in database
   async function AddTask(index) {
     const token = sessionStorage.getItem("currentSession");
 
@@ -89,6 +95,7 @@ function Aiassist() {
     }
   }
 
+  //api route for fetching suggestion for task
   async function fetchSuggestions() {
     const token = sessionStorage.getItem("currentSession");
 
@@ -109,19 +116,20 @@ function Aiassist() {
     }
   }
 
+  //render each suggestions on screen
   function Suggestions() {
     ///skeleton screen
     if (suggestedTask.length == 0) {
       return (
         <>
           <div className="flex flex-col gap-4">
-            <div className="flex justify-around bg-gray-100 w-full max-w-[20rem] gap-2  p-2 py-4 rounded-xl border-1 border-gray-300">
+            <div className="flex justify-around bg-gray-100 w-full max-w-[30rem] gap-4  p-2 py-4 rounded-xl border-1 border-gray-300">
               <div className="bg-gray-300 animate-pulse p-5 max-h-6 rounded-full"></div>
               <div className="mx-4 ">
                 <div className="bg-gray-300 py-4  animate-pulse rounded-md"></div>
 
-                <div className="flex justify-center  gap-6 mt-2">
-                  <div className="bg-gray-300 px-12 py-5 rounded-md animate-pulse  "></div>
+                <div className="flex justify-center  gap-8 mt-2">
+                  <div className="bg-gray-300 px-13 py-5 rounded-md animate-pulse  "></div>
                   <div className="bg-gray-300 px-12 py-5 rounded-md animate-pulse  "></div>
                 </div>
               </div>
@@ -131,19 +139,8 @@ function Aiassist() {
               <div className="ml-4 mr-4">
                 <div className="bg-gray-300 py-4 animate-pulse rounded-md"></div>
 
-                <div className="flex justify-center  gap-6 mt-2">
-                  <div className="bg-gray-300 px-12 py-5 rounded-md animate-pulse  "></div>
-                  <div className="bg-gray-300 px-12 py-5 rounded-md animate-pulse  "></div>
-                </div>
-              </div>
-            </div>
-            <div className="flex justify-around gap-2 bg-gray-100 w-full max-w-[20rem]  p-2 py-4 rounded-xl border-1 border-gray-300">
-              <div className="bg-gray-300 animate-pulse p-5 max-h-6 rounded-full"></div>
-              <div className="ml-4 mr-4">
-                <div className="bg-gray-300 py-4 animate-pulse rounded-md"></div>
-
-                <div className="flex justify-center  gap-6 mt-2">
-                  <div className="bg-gray-300 px-12 py-5 rounded-md animate-pulse  "></div>
+                <div className="flex justify-center  gap-8 mt-2">
+                  <div className="bg-gray-300 px-13 py-5 rounded-md animate-pulse  "></div>
                   <div className="bg-gray-300 px-12 py-5 rounded-md animate-pulse  "></div>
                 </div>
               </div>
@@ -153,8 +150,8 @@ function Aiassist() {
               <div className="ml-4 mr-4">
                 <div className="bg-gray-300 py-4 animate-pulse rounded-md"></div>
 
-                <div className="flex justify-center  gap-6 mt-2">
-                  <div className="bg-gray-300 px-12 py-5 rounded-md animate-pulse  "></div>
+                <div className="flex justify-center  gap-8 mt-2">
+                  <div className="bg-gray-300 px-13 py-5 rounded-md animate-pulse  "></div>
                   <div className="bg-gray-300 px-12 py-5 rounded-md animate-pulse  "></div>
                 </div>
               </div>
@@ -164,8 +161,19 @@ function Aiassist() {
               <div className="ml-4 mr-4">
                 <div className="bg-gray-300 py-4 animate-pulse rounded-md"></div>
 
-                <div className="flex justify-center  gap-6 mt-2">
+                <div className="flex justify-center  gap-8 mt-2">
+                  <div className="bg-gray-300 px-13 py-5 rounded-md animate-pulse  "></div>
                   <div className="bg-gray-300 px-12 py-5 rounded-md animate-pulse  "></div>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-around gap-2 bg-gray-100 w-full max-w-[20rem]  p-2 py-4 rounded-xl border-1 border-gray-300">
+              <div className="bg-gray-300 animate-pulse p-5 max-h-6 rounded-full"></div>
+              <div className="ml-4 mr-4">
+                <div className="bg-gray-300 py-4 animate-pulse rounded-md"></div>
+
+                <div className="flex justify-center  gap-8 mt-2">
+                  <div className="bg-gray-300 px-13 py-5 rounded-md animate-pulse  "></div>
                   <div className="bg-gray-300 px-12 py-5 rounded-md animate-pulse  "></div>
                 </div>
               </div>
@@ -222,6 +230,7 @@ function Aiassist() {
     });
   }
 
+  
   return (
     <div className="bg-gray-100 max-w-fit w-full  overflow-y-auto h-dvh px-5 ml-auto  border-l-1 border-gray-300">
       <div className="font-semibold py-4 flex w-fit  items-center ">
@@ -237,6 +246,8 @@ function Aiassist() {
           <div
             onClick={() => {
               hasMounted.current = false
+              fetchSuggestions();
+              setSuggestedTask([])
               // setRefreshTask(!refreshTasks);
             }}
             className="flex justify-center  font-md text-gray-600 w-55   items-center bg-white p-2 cursor-pointer transition-colors  hover:text-teal-700  hover:border-teal-300 hover:border-t-2 rounded-xl border-t-1 border-gray-300"
