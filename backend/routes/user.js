@@ -155,7 +155,7 @@ router.get("/allcategories", authMiddleware, async (req, res) => {
           _id: userId,
         });
 
-        console.log(currUser)
+        // console.log(currUser)
 
         return res.json({
           message: "categories fetched",

@@ -65,7 +65,7 @@ router.get("/emails", authMiddleware, async (req, res) => {
     res.json(messages);
   } catch (error) {
     res.status(500).json({
-      error: error,
+      error: error.data,
     });
   }
 });
