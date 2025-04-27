@@ -40,6 +40,8 @@ function UpdateTask() {
     currentTaskUpdate.completed
   );
 
+  const { currentScreen, setCurrentScreen } = useContext(TodoContext);
+
   function taskTittleAndDes() {
     return (
       <>
@@ -106,7 +108,8 @@ function UpdateTask() {
       );
       console.log(response);
       if (response.data.message == "todoUpdated") {
-        navigate("/dashboard");
+        // navigate("/dashboard");
+        setCurrentScreen('main')
         setBtnClikedTask(false);
       }
     } catch (error) {
@@ -154,7 +157,7 @@ function UpdateTask() {
                 id="Priority"
               >
                 <option value="Low">Low</option>
-                <option value="Mid">Mid</option>
+                <option value="Medium">Mid</option>
                 <option value="High">High</option>
               </select>
             </div>
@@ -190,7 +193,8 @@ function UpdateTask() {
           <div
             onClick={() => {
               setBtnClikedTask(false);
-              navigate("/dashboard");
+              // navigate("/dashboard");
+              setCurrentScreen('main')
             }}
             className="bg-gray-100 text-sm self-center cursor-pointer hover:bg-red-300 hover:border-red-400 transition  w-fit h-auto   px-6 border border-gray-200 rounded-xl py-3  font-semibold text-gray-700"
           >

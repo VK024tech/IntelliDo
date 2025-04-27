@@ -30,7 +30,7 @@ body {
 }
 
 .p-datepicker {
-  background-color: white;
+  background-color: rgb(240, 240, 240);
   padding-inline: 4px;
   border-radius: 10px;
   cursor: pointer;
@@ -40,7 +40,7 @@ body {
 .p-timepicker * {
   padding-inline: 2px;
   width: max-content;
-  background-color: white;
+  background-color: rgb(240, 240, 240);
   cursor: pointer;
 }
 

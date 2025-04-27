@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { TodoContext } from "../../contexts/TodoContext";
 
+
 function MainScreen() {
   const iconColor = "#aeabb6";
   let taskIcon = "#adadad";
@@ -25,6 +26,8 @@ function MainScreen() {
   const { dateBasedFilter, setDateBasedFilter } = useContext(TodoContext);
 
   const { suggestedTask, setSuggestedTask } = useContext(TodoContext);
+
+    const { currentScreen, setCurrentScreen } = useContext(TodoContext);
 
   useEffect(() => {
     FetchTaskList();
@@ -194,7 +197,8 @@ function MainScreen() {
             <div
               onClick={() => {
                 setClickedIndex(index);
-                navigate("/dashboard/edittask");
+                // navigate("/dashboard/edittask");
+                setCurrentScreen('updateTask')
               }}
             >
               <div
@@ -315,7 +319,9 @@ function MainScreen() {
         </div>
         <div
           onClick={() => {
-            navigate("/dashboard/newtask");
+            // navigate("/dashboard/newtask");
+            setCurrentScreen('newTask')
+            
           }}
           className="flex gap-2 mx-6 transition-colors hover:border-teal-300 hover:bg-teal-100 rounded-md py-3 p-1 border-1 border-gray-300 text-gray-400"
         >

@@ -38,6 +38,8 @@ export const TodoContextProvider = ({ children }) => {
   const resolveRef = useRef(null);
   const rejectRef = useRef(null);
 
+   const [currentScreen, setCurrentScreen] = useState("main");
+
   const getUserInput = () => {
     setPromptOpen(true);
     return new Promise((resolve, reject) => {
@@ -82,7 +84,9 @@ export const TodoContextProvider = ({ children }) => {
     getUserInput,
     resolveRef,
     suggestedTask,
-    setSuggestedTask
+    setSuggestedTask,
+    currentScreen,
+    setCurrentScreen
   };
 
   return (

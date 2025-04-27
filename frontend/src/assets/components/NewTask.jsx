@@ -24,7 +24,7 @@ function NewTask() {
 
   const { totalCategories, setTotalCategories } = useContext(TodoContext);
 
-
+const { currentScreen, setCurrentScreen } = useContext(TodoContext);
 
   function taskTittleAndDes() {
     return (
@@ -96,8 +96,9 @@ function NewTask() {
         setStartDateTime("");
         setSubtasks("");
         setTitle("");
-        navigate("/dashboard");
         setBtnClikedTask(false);
+        // navigate("/dashboard");
+        setCurrentScreen('main')
       }
     } catch (error) {
       console.log(error.response.data.message);
@@ -140,7 +141,7 @@ function NewTask() {
                 id="Priority"
               >
                 <option value="Low">Low</option>
-                <option value="Mid">Mid</option>
+                <option value="Medium">Mid</option>
                 <option value="High">High</option>
               </select>
             </div>
@@ -175,7 +176,8 @@ function NewTask() {
           <div
             onClick={() => {
               setBtnClikedTask(false);
-              navigate("/dashboard");
+              // navigate("/dashboard");
+              setCurrentScreen('main')
             }}
             className="bg-gray-100 text-sm self-center cursor-pointer hover:bg-red-300 hover:border-red-400 transition  w-fit h-auto   px-6 border border-gray-200 rounded-xl py-3  font-semibold text-gray-700"
           >
