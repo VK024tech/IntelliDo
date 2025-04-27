@@ -33,6 +33,8 @@ export const TodoContextProvider = ({ children }) => {
   const [promptValue, setPromptvalue] = useState("");
   const [promptPromise, setPromptPromise] = useState();
 
+  const [suggestedTask, setSuggestedTask] = useState([]);
+
   const resolveRef = useRef(null);
   const rejectRef = useRef(null);
 
@@ -79,6 +81,8 @@ export const TodoContextProvider = ({ children }) => {
     setPromptPromise,
     getUserInput,
     resolveRef,
+    suggestedTask,
+    setSuggestedTask
   };
 
   return (

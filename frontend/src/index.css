@@ -18,6 +18,17 @@ body {
   }
 }
 
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
 .p-datepicker {
   background-color: white;
   padding-inline: 4px;

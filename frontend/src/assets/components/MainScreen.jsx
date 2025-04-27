@@ -24,9 +24,11 @@ function MainScreen() {
 
   const { dateBasedFilter, setDateBasedFilter } = useContext(TodoContext);
 
+  const { suggestedTask, setSuggestedTask } = useContext(TodoContext);
+
   useEffect(() => {
     FetchTaskList();
-  }, [updatedTaskList]);
+  }, [updatedTaskList, suggestedTask]);
 
   async function FetchTaskList() {
     const token = sessionStorage.getItem("currentSession");
@@ -66,7 +68,7 @@ function MainScreen() {
       });
       // console.log(response);
       if (response.data.message == "todoDeleted") {
-        setUpdatedTaskList(true);
+        setUpdatedTaskList(!updatedTaskList);
       }
     } catch (error) {
       console.log(error);
@@ -76,13 +78,15 @@ function MainScreen() {
   async function isCompleteTask(id) {
     const token = sessionStorage.getItem("currentSession");
 
+    //temp customcompleted value to use for sending todo status, as the usestate does not get updated immediately
+    const curentValueCompleted = !taskCompleted;
     setTaskCompleted(!taskCompleted);
 
     try {
       const response = await axios.put(
         "http://localhost:3200/todo/update",
         {
-          completed: taskCompleted,
+          completed: curentValueCompleted,
         },
         {
           headers: {
@@ -93,19 +97,14 @@ function MainScreen() {
       );
       // console.log(response);
       if (response.data.message == "todoUpdated") {
-        if (updatedTaskList) {
-          setUpdatedTaskList(false);
-        } else {
-          setUpdatedTaskList(true);
-        }
+        setUpdatedTaskList(!updatedTaskList);
       }
     } catch (error) {
       console.log(error);
     }
   }
 
-
-  ///use effect to trigger render when taskcompleted changes without this first time render was not happening 
+  ///use effect to trigger render when taskcompleted changes without this first time render was not happening
   useEffect(() => {
     Tasks();
   }, [taskCompleted]);
@@ -119,7 +118,9 @@ function MainScreen() {
       if (dateBasedFilter == "Today") {
         dateFilter = taskList.filter((curr) => {
           const dateTime = curr.creationDate;
+          console.log("i;mmain" + dateTime);
           const newDateTime = new Date(dateTime);
+          console.log("i;mmain" + newDateTime);
 
           return newDateTime.toLocaleDateString() === today;
         });
@@ -177,9 +178,9 @@ function MainScreen() {
       return (
         <div
           key={task._id}
-          className="flex flex-row overflow-y-auto justify-between cursor-pointer  hover:bg-gray-100 rounded-md py-2 px-2 pr-3 my-1 items-center font-medium text-gray-700 mx-6"
+          className="flex  flex-row  justify-between cursor-pointer  hover:bg-gray-100 rounded-md py-2 px-2 pr-3 my-1 items-center font-medium text-gray-700 mx-6"
         >
-          <div className="flex items-center  gap-3">
+          <div className="flex items-center   gap-3">
             <div
               onClick={() => {
                 isCompleteTask(task._id);
@@ -218,6 +219,19 @@ function MainScreen() {
                 >
                   <span>🗓️</span> {newDateTime.toLocaleString()}
                 </div>
+                <div
+                  className={`bg-gray-50 rounded-xl px-2 ${
+                    task.priority === "High"
+                      ? "text-red-400"
+                      : task.priority === "Medium"
+                      ? "text-yellow-400"
+                      : task.priority === "Low"
+                      ? "text-green-400"
+                      : ""
+                  } ${taskComplete ? "text-gray-400 " : " text-gray-700"}`}
+                >
+                  {task.priority}
+                </div>
               </div>
             </div>
           </div>
@@ -244,7 +258,7 @@ function MainScreen() {
               onClick={() => {
                 deleteTodo(task._id);
               }}
-              className="cursor-pointer "
+              className="cursor-pointer  "
               style={{ color: deleteEnter ? taskIcon : "#f5655b" }}
               size={17}
             />
@@ -255,7 +269,7 @@ function MainScreen() {
   }
 
   return (
-    <div className="w-full h-dvh   py-3 ">
+    <div className="w-full h-dvh   py-3  ">
       <div className="font-bold text-xl px-6  text-gray-800 pt-2 pb-4 border-b-1 border-gray-300">
         Tasks
       </div>
@@ -313,7 +327,9 @@ function MainScreen() {
           New task...
         </div>
       </div>
-      <div className="mt-3">{Tasks()}</div>
+      <div className="mt-3 overflow-y-auto h-max max-h-145 no-scrollbar  ">
+        {Tasks()}
+      </div>
     </div>
   );
 }
