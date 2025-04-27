@@ -15,8 +15,6 @@ router.get("/gemini", async (req, res) => {
 
   const finalData = await getMails.json();
 
-
-
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.GeminiApi });
     // const response = await ai.models.generateContent({
@@ -65,9 +63,9 @@ router.get("/gemini", async (req, res) => {
                 TaskName: { type: "string" },
                 Description: { type: "string" },
                 Priority: {
-                    type: "string",
-                    enum: ["High", "Medium", "Low"],
-                  },
+                  type: "string",
+                  enum: ["High", "Medium", "Low"],
+                },
                 Subtasks: { type: "string" },
                 Category: {
                   type: "string",
@@ -94,8 +92,6 @@ router.get("/gemini", async (req, res) => {
 
       suggestedTasks.push(...parsedTaks);
     }
-
-    console.log(suggestedTasks);
 
     res.json(suggestedTasks);
   } catch (error) {

@@ -47,8 +47,8 @@ router.get(
   }),
   (req, res) => {
     const { token, accessToken, refreshToken, user } = req.user;
-  
-    res.redirect(`http://localhost:5173/dashboard?jwt=${token}`)
+
+    res.redirect(`http://localhost:5173/dashboard?jwt=${token}`);
   }
 );
 
@@ -56,7 +56,7 @@ router.get("/emails", authMiddleware, async (req, res) => {
   try {
     const userID = req.headers.userId;
     const getUser = await user.findOne({
-    _id: userID,
+      _id: userID,
     });
 
     const accessToken = getUser.accessToken;
@@ -77,10 +77,18 @@ router.get("/refreshToken", authMiddleware, async (req, res) => {
       _id: userID,
     });
 
-    const newtoken = await reload.refreshToken(getUser.refreshToken, getUser.googleID);
+    const newtoken = await reload.refreshToken(
+      getUser.refreshToken,
+      getUser.googleID
+    );
+
+    const SaveToken = await user.findByIdAndUpdate(userID, {
+      accessToken: newtoken,
+    });
+
     console.log(newtoken);
 
-    res.json(newtoken);
+    res.json("Successfull");
   } catch (error) {
     res.status(500).json({
       error: error,

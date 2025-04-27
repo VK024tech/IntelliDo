@@ -15,8 +15,8 @@ async function getMessageIds(accessToken) {
     });
     return response.data.messages || [];
   } catch (error) {
-    console.log(error);
-    throw error;
+    console.log(error.response.data.error.message);
+    // throw error;
   }
 }
 
