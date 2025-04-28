@@ -47,7 +47,7 @@ function Aiassist() {
       // console.log(response.data.message);
       if (response.data.message == "Successfull") {
         fetchSuggestions();
-        console.log("successfull");
+        console.log(response.data);
       }
     } catch (error) {
       console.log(error.response.data.message);
@@ -109,9 +109,11 @@ function Aiassist() {
       setSuggestedTask(response.data);
       hasMounted.current = true;
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
       if (error.message == "Request failed with status code 500") {
         RefreshToken();
+      }else{
+        console.log('error while fetching suggestions data')
       }
     }
   }

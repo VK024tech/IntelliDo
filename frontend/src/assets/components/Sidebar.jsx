@@ -11,7 +11,6 @@ import axios from "axios";
 import { TodoContext } from "../../contexts/TodoContext";
 import UserPrompt from "./Popups/UserPrompt";
 
-
 function Sidebar() {
   const iconColor = "#aeabb6";
 
@@ -26,10 +25,12 @@ function Sidebar() {
   //promise for await on user input prompt
   const { getUserInput } = useContext(TodoContext);
 
+  console.log(totalCategories);
 
-//for fetching all categories on mount of component
+  //for fetching all categories on mount of component
   useEffect(() => {
-    fetchAllCategories();
+    // fetchAllCategories();
+    saveDefaultcategories()
   }, []);
 
   ///catogory fetching logic
@@ -54,6 +55,37 @@ function Sidebar() {
         setTotalCategories(response.data.allCategories);
         // console.log(response);
       }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  //initial catogries save
+  async function saveDefaultcategories() {
+    
+    const token = sessionStorage.getItem("currentSession");
+    if (!token) {
+      return navigate("/signin");
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3200/user/addcategory",
+        {
+          totalCategories: [...totalCategories],
+        },
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+      // console.log(response.data.todoList);
+      if (response.data.message == "Successfull created category") {
+        console.log("done");
+        fetchAllCategories();
+      }
+
     } catch (error) {
       console.log(error);
     }
@@ -104,7 +136,6 @@ function Sidebar() {
     }
   }
 
-  
   function Menu() {
     return (
       <>
@@ -161,7 +192,6 @@ function Sidebar() {
       </>
     );
   }
-
 
   ///dynamicly giving every catogory a icon and rendering it on screen
   function DynamicCategoryArray() {
@@ -278,7 +308,6 @@ function Sidebar() {
     );
   }
 
-  
   return (
     <div className="bg-gray-100 max-w-[16rem] w-full h-dvh px-3   border-r-1 border-gray-300">
       <div className="flex flex-col justify-between h-full">
