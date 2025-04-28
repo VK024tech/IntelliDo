@@ -4,10 +4,13 @@ const { google } = require("googleapis");
 //import db schema
 const { todo, user } = require("../database/schemadb");
 
+//refresh token logic using the google id 
 async function refreshToken(refreshToken, userID) {
     const getUser = await user.findOne({
       googleID: userID,
     });
+
+  
   const oAuth2Client  = new OAuth2Client(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,

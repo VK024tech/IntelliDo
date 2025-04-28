@@ -25,6 +25,7 @@ require("../config/openAuth");
 //token refresh
 const reload = require("../config/tokenRefresh");
 
+//the route where user will be redirevcted to autheticate with oauth
 router.get(
   "/google",
   passport.authenticate("google", {
@@ -39,6 +40,7 @@ router.get(
   })
 );
 
+///route the google will sent back user after authenticating
 router.get(
   "/google/callback",
   passport.authenticate("google", {
@@ -52,6 +54,7 @@ router.get(
   }
 );
 
+///route to fetch emails
 router.get("/emails", authMiddleware, async (req, res) => {
   try {
     const userID = req.headers.userId;
@@ -70,6 +73,8 @@ router.get("/emails", authMiddleware, async (req, res) => {
   }
 });
 
+
+// route to refrech access tokens using the refresh tokens
 router.get("/refreshToken", authMiddleware, async (req, res) => {
   try {
     const userID = req.headers.userId;
@@ -86,7 +91,7 @@ router.get("/refreshToken", authMiddleware, async (req, res) => {
       accessToken: newtoken,
     });
 
-    console.log(newtoken);
+    console.log('this is new token:',newtoken);
 
     res.json("Successfull");
   } catch (error) {

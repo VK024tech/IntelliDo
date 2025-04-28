@@ -1,6 +1,7 @@
 const { access } = require("fs");
 const jwt = require("jsonwebtoken");
 
+//middleware to autheticate user using jwt 
 function authMiddleware(req, res, next) {
   const token = req.headers.token;
 

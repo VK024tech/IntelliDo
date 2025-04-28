@@ -16,6 +16,8 @@ const express = require("express");
 //get router from express
 const router = express.Router();
 
+
+///defining the google strategy 
 passport.use(
   new GoogleStrategy(
     {

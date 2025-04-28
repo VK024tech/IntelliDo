@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 const obejctid = schema.ObjectId;
 
-
+//schema for users
 const userSchema = new schema({
     fullname: String,
     username: String,
@@ -16,7 +16,7 @@ const userSchema = new schema({
 })
 
 
-
+//schema for todo
 const todoSchema = new schema({
     userId: obejctid,
     title: String,

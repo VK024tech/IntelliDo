@@ -1,6 +1,6 @@
 const { google } = require("googleapis");
 
-
+///logic to get emails id from google
 async function getMessageIds(accessToken) {
   const auth = new google.auth.OAuth2();
   auth.setCredentials({ access_token: accessToken });
@@ -20,6 +20,8 @@ async function getMessageIds(accessToken) {
   }
 }
 
+
+//logic to get message  using the email ids
 async function getFullMessage(accessToken) {
   const auth = new google.auth.OAuth2();
   auth.setCredentials({ access_token: accessToken });
