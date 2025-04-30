@@ -262,7 +262,7 @@ export default function UserSign() {
         
         <img
           className="w-md max-w-95 md:max-w-100  hidden md:block  h-auto max-h-full rounded-2xl  "
-          src="../assets/image_fx2.jpg"
+          src="./images/image_fx2.jpg"
           alt="image"
         />
   
