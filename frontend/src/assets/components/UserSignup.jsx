@@ -16,7 +16,8 @@ export default function UserSign() {
 
   ///password
   const { userPassword, setuserPassword } = useContext(UserContext);
-  const { confirmUserPassword, setConfirmUserPassword } = useContext(UserContext);
+  const { confirmUserPassword, setConfirmUserPassword } =
+    useContext(UserContext);
   const { type, setType } = useContext(UserContext);
   const { eye, setEye } = useContext(UserContext);
 
@@ -37,7 +38,6 @@ export default function UserSign() {
     }
   }
 
-
   // password toggle to show and hide password
   function visiblityToggle() {
     if (!eye) {
@@ -53,7 +53,7 @@ export default function UserSign() {
   const { emailError, setEmailError } = useContext(UserContext);
   const { userNameError, setUserNameError } = useContext(UserContext);
 
-  // sign up button function 
+  // sign up button function
   async function signupButton() {
     ////form validation check
     const regex =
@@ -95,9 +95,9 @@ export default function UserSign() {
     }
   }
 
-// api call to backend to create new account
+  // api call to backend to create new account
   async function SignUpUser() {
-    const response = await axios.post("http://localhost:3200/user/signup", {
+    const response = await axios.post("http://192.168.29.178:3200/user/signup", {
       name: userName,
       username: userName.split(" ")[0],
       email: userEmail,
@@ -109,7 +109,7 @@ export default function UserSign() {
 
   // sign up route for google oauth
   async function signUpWithGoogle() {
-    // const response = await axios.get("http://localhost:3200/auth/google");
+    // const response = await axios.get("http://192.168.29.178:3200/auth/google");
     window.location.href = "http://localhost:3200/auth/google";
     // console.log(response)
     // return response;
@@ -132,8 +132,11 @@ export default function UserSign() {
             </div>
             <span className="bg-gray-500 w-0.5 h-8 my-auto "></span>
             <input
+            autoComplete="on"
               className="w-full py-2 pl-2 outline-none"
               type="text"
+              
+              name="username"
               placeholder="Username"
               onChange={(e) => {
                 setUserName(e.target.value);
@@ -151,7 +154,7 @@ export default function UserSign() {
     );
   }
 
-    //user email component
+  //user email component
   function componentUserEmail() {
     return (
       <div className="mb-2">
@@ -169,6 +172,8 @@ export default function UserSign() {
             <span className="bg-gray-500 w-0.5 h-8 my-auto "></span>
             <input
               className="w-full py-2 pl-2 outline-none"
+              autoComplete="on"
+               name="useremail"
               type="email"
               placeholder="Email"
               onChange={(e) => {
@@ -187,11 +192,11 @@ export default function UserSign() {
     );
   }
 
-    //user password component
+  //user password component
   function componentUserPassword() {
     return (
       <>
-        <div className="mb-4">
+        <div className="mb-2">
           <div className="pb-1 text-gray-800 font-bold flex flex-row justify-between">
             Password{" "}
             <span className=" text-xs mt-auto max-w-50  text-red-400 font-bold">
@@ -212,6 +217,8 @@ export default function UserSign() {
               <span className="bg-gray-500 w-0.5 h-8 my-auto "></span>
               <input
                 className="w-full py-2 pl-2 outline-none "
+                name="userpassword"
+                
                 type={type}
                 placeholder="Password"
                 onChange={(e) => {
@@ -227,11 +234,13 @@ export default function UserSign() {
             </div>
           </div>
         </div>
-        <div className="mb-2">
+        <div className="mb-1">
           <div className="border-2 rounded-md border-gray-500 overflow-hidden">
             <div className="flex flex-row">
               <input
                 className="w-full py-2 pl-4 outline-none"
+                autoComplete="off"
+                name="password"
                 type={type}
                 placeholder="Confirm password"
                 onChange={(e) => {
@@ -246,19 +255,26 @@ export default function UserSign() {
     );
   }
 
-
-  
   return (
-    <div className="bg-gradient-to-r from-teal-100 to-teal-50 w-screen h-screen p-12">
-      <div className="bg-white w-auto flex flex-row justify-center rounded-2xl shadow-lg shadow-teal-200  items-center h-full py-8 pl-8 [@media(width<1240px)]:mx-20 md:mx-50">
+    <div className="bg-gradient-to-r  from-teal-100 to-teal-50 w-screen h-screen  md:p-12">
+      
+      <div className="bg-white w-auto  flex flex-row justify-center  rounded-2xl shadow-lg shadow-teal-200 px-2  items-center h-full py-2 md:py-8 md:pl-8  [@media(width<426px)]:mx-0 [@media(width>425px)]:mx-0    [@media(width>768px)]:mx-20">
+        
         <img
-          className="w-md max-w-95 md:max-w-110  h-auto max-h-full rounded-2xl  "
+          className="w-md max-w-95 md:max-w-100  hidden md:block  h-auto max-h-full rounded-2xl  "
           src="../assets/image_fx2.jpg"
           alt="image"
         />
-
-        <div className="w-full max-w-sm mx-auto px-6 flex flex-col gap-2">
-          <div className="text-3xl text-gray-800 text-center font-bold mb-4">
+  
+        <div  className="w-full max-w-sm mx-auto mb-auto md:my-auto py-2 px-2 md:px-6 flex flex-col gap-1">
+          
+          <div className=" text-center py-2 pb-8 [@media(width>766px)]:pb-2 text-4xl font-bold text-gray-900">
+            Intelli<span className="text-teal-500">Do</span>
+            <div className="text-xs    ">
+              <span >The Smarter way to do!</span>
+            </div>
+          </div>
+          <div className="text-2xl text-gray-800  font-bold mb-4">
             SignUp
           </div>
           {componentUserName()}
@@ -269,16 +285,16 @@ export default function UserSign() {
             onClick={() => {
               signupButton();
             }}
-            className="bg-teal-300 hover:bg-teal-400 text-white p-2 text-center rounded-md py-3 mb-4 cursor-pointer"
+            className="bg-teal-300 hover:bg-teal-400 text-white p-2 text-center  rounded-md py-3 mb-4 md:mb-2 cursor-pointer"
           >
             Sign Up
           </div>
           <div className="inline-flex text-sm  items-center justify-center w-full  mb-4">
-            <hr className="max-w-24 w-full h-[0.5px]  bg-gray-500 border-0"></hr>
-            <span className="px-2  text-gray-500 font-medium">
+            <hr className="max-w-20 md:max-w-24 w-full h-[0.5px]  bg-gray-500 border-0"></hr>
+            <span className="px-2 text-xs md:text-md text-gray-500 font-medium">
               Or Continue With
             </span>
-            <hr className="max-w-24 w-full h-[0.5px]  bg-gray-500 border-0"></hr>
+            <hr className="max-w-20 md:max-w-24 w-full h-[0.5px]  bg-gray-500 border-0"></hr>
           </div>
           <div
             onClick={() => {

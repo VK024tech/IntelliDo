@@ -9,8 +9,8 @@ function UserPrompt() {
   
 
   return (
-    <div className="fixed inset-0 z-50 w-dvw h-dvh  bg-gray-400/20 backdrop-blur-sm">
-      <div className="bg-white w-fit h-fit text-gray-800 gap-4 rounded-4xl flex flex-col  mx-auto mt-[18%] p-7 pl-4  ">
+    <div className={`fixed inset-0 z-50 w-dvw   h-dvh   bg-gray-400/20 backdrop-blur-sm`}>
+      <div className={`bg-white w-full md:w-fit h-fit -translate-x-8   text-gray-800 gap-4 rounded-4xl flex flex-col mx-8 md:mx-auto mt-[18%] p-7 pl-4  `}>
         <div className="font-semibold text-xl cursor-default">
           Category name
         </div>
@@ -19,7 +19,7 @@ function UserPrompt() {
             setPromptvalue(e.target.value);
           }}
           value={promptValue}
-          className=" bg-gray-100 p-2 rounded-md   placeholder:font-medium pr-50"
+          className=" bg-gray-100 p-2 rounded-md   placeholder:font-medium md:pr-50"
           type="text"
           placeholder="Type the category name"
         />

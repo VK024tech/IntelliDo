@@ -26,10 +26,19 @@ function Dashboard() {
     }
   }, []);
 
+  ////forcing re render of main screen component beacuse the fetch task was not working on first render even after using useeffct, this is the solution i found out
+  const [renderKey, setRenderkey] = useState("1");
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setRenderkey("2");
+    }, 50);
+    return () => clearTimeout(timer);
+  });
+
   ///conditional rendering of components
   function middleScreen() {
     if (currentScreen == "main") {
-      return <MainScreen />;
+      return <MainScreen key={renderKey} />;
     } else if (currentScreen == "updateTask") {
       return <UpdateTask />;
     } else if (currentScreen == "newTask") {

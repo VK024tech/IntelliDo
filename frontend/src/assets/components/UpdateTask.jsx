@@ -89,7 +89,7 @@ function UpdateTask() {
 
     try {
       const response = await axios.put(
-        "http://localhost:3200/todo/update",
+        "http://192.168.29.178:3200/todo/update",
         {
           title: currentTitle,
           priority: currentPriority,
@@ -122,7 +122,7 @@ function UpdateTask() {
   return (
     <div className="w-screen h-dvh overflow-y-auto ">
       <div className="flex flex-col h-dvh justify-center items-center ">
-        <div className="h-full w-full min-h-fit min-w-fit bg-white px-4 rounded-2xl pb-2   py-8">
+        <div className="h-full w-full min-h-fit min-w-fit bg-white px-4 rounded-2xl pb-2 py-2  md:py-8">
           <div className="font-bold text-xl   text-gray-800  pb-1 border-b-1 border-gray-300">
             Edit task
           </div>

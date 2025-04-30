@@ -74,7 +74,7 @@ const { currentScreen, setCurrentScreen } = useContext(TodoContext);
 
     try {
       const response = await axios.post(
-        "http://localhost:3200/todo/add",
+        "http://192.168.29.178:3200/todo/add",
         {
           title: title,
           priority: priority,
@@ -114,8 +114,8 @@ const { currentScreen, setCurrentScreen } = useContext(TodoContext);
   return (
     <div className="w-screen h-dvh overflow-y-auto ">
       <div className="flex flex-col h-dvh justify-center items-center ">
-        <div className="h-full w-full min-h-fit min-w-fit bg-white px-4 rounded-2xl pb-2   py-8">
-          <div className="font-bold text-xl   text-gray-800  pb-1 border-b-1 border-gray-300">
+        <div className="h-full w-full min-h-fit min-w-fit bg-white px-4 rounded-2xl pb-2 py-2  md:py-8">
+          <div className="font-bold text-xl    text-gray-800  pb-1 border-b-1 border-gray-300">
             New task
           </div>
           {taskTittleAndDes()}
@@ -171,7 +171,7 @@ const { currentScreen, setCurrentScreen } = useContext(TodoContext);
                 onChange={(e) => {
                   setSubtasks(e.target.value);
                 }}
-                className="outline-none field-sizing-content min-h-[150px] w-full h-full placeholder:font-medium"
+                className="outline-none field-sizing-content min-h-[60px] md:min-h-[150px] w-full h-full placeholder:font-medium"
                 type="text"
                 placeholder="Break task into smaller parts"
               />

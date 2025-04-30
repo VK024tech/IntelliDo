@@ -5,7 +5,9 @@ import { BsSuitcaseLg } from "react-icons/bs";
 import { FaRegHeart } from "react-icons/fa";
 import { MdDoubleArrow } from "react-icons/md";
 import { WiMoonAltNew } from "react-icons/wi";
+import { RxHamburgerMenu } from "react-icons/rx";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { IoClose } from "react-icons/io5";
 
 import axios from "axios";
 import { TodoContext } from "../../contexts/TodoContext";
@@ -30,7 +32,7 @@ function Sidebar() {
   //for fetching all categories on mount of component
   useEffect(() => {
     // fetchAllCategories();
-    saveDefaultcategories()
+    saveDefaultcategories();
   }, []);
 
   ///catogory fetching logic
@@ -42,7 +44,7 @@ function Sidebar() {
 
     try {
       const response = await axios.get(
-        "http://localhost:3200/user/allcategories",
+        "http://192.168.29.178:3200/user/allcategories",
 
         {
           headers: {
@@ -62,7 +64,6 @@ function Sidebar() {
 
   //initial catogries save
   async function saveDefaultcategories() {
-    
     const token = sessionStorage.getItem("currentSession");
     if (!token) {
       return navigate("/signin");
@@ -70,7 +71,7 @@ function Sidebar() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3200/user/addcategory",
+        "http://192.168.29.178:3200/user/addcategory",
         {
           totalCategories: [...totalCategories],
         },
@@ -85,7 +86,6 @@ function Sidebar() {
         console.log("done");
         fetchAllCategories();
       }
-
     } catch (error) {
       console.log(error);
     }
@@ -115,7 +115,7 @@ function Sidebar() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3200/user/addcategory",
+        "http://192.168.29.178:3200/user/addcategory",
         {
           totalCategories: [...totalCategories, CategoryName],
         },
@@ -308,14 +308,47 @@ function Sidebar() {
     );
   }
 
+  const { aiMenu, setAiMenu } = useContext(TodoContext);
+
+  const { aiMenuBurger } = useContext(TodoContext);
+
+  const { burgerMenu, setBurgerMenu } = useContext(TodoContext);
+  const { burgerMenuVisible, setBurgerMenuVisible } = useContext(TodoContext);
+
+  const { sidebarBurger } = useContext(TodoContext);
+
   return (
-    <div className="bg-gray-100 max-w-[16rem] w-full h-dvh px-3   border-r-1 border-gray-300">
+    <div
+      className={`bg-gray-100 ${
+        window.innerWidth < 768 ? burgerMenuVisible : "translate-x-0 static"
+      }  fixed md:static transition-transform transform  duration-500  max-w-[16rem] w-full h-dvh px-3 md:max-w-[16rem]  border-r-1 border-gray-300`}
+    >
       <div className="flex flex-col justify-between h-full">
         <div>
-          <div className="text-2xl py-2 pb-8 font-bold text-gray-900">
-            Intelli<span className="text-teal-500">Do</span>
-            <div className="text-xs  border-b pb-2  border-gray-300">
-              The Smarter way to do!
+          <div className="flex flex-row justify-between ">
+            <div className="text-2xl py-2 pb-8 font-bold text-gray-900">
+              Intelli
+              <span className="text-teal-500">
+                Do <div></div>
+              </span>
+              <div className="text-xs  border-b pb-2  border-gray-300">
+                The Smarter way to do!
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                setBurgerMenu(!burgerMenu);
+                sidebarBurger();
+                console.log("hey");
+              }}
+              className="py-3"
+            >
+              <IoClose
+                className={`${
+                  window.innerWidth < 768 ? "visible" : "invisible"
+                }`}
+                size={28}
+              />
             </div>
           </div>
           {Menu()}

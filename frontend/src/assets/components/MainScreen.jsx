@@ -7,9 +7,12 @@ import { MdOutlineCalendarToday } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { TodoContext } from "../../contexts/TodoContext";
-
+import { RxHamburgerMenu } from "react-icons/rx";
+import { BsRobot } from "react-icons/bs";
 
 function MainScreen() {
+  console.log("mainscreen started");
+
   const iconColor = "#aeabb6";
   let taskIcon = "#adadad";
   let deleteEnter = false;
@@ -27,11 +30,23 @@ function MainScreen() {
 
   const { suggestedTask, setSuggestedTask } = useContext(TodoContext);
 
-    const { currentScreen, setCurrentScreen } = useContext(TodoContext);
+  const { currentScreen, setCurrentScreen } = useContext(TodoContext);
 
-   //for detching task list form database on update of tasks
-  useEffect(() => {
+  console.log(currentScreen);
+
+  const firstFetch = useRef(false);
+
+  //for detching task list form database on update of tasks
+
+  if (!firstFetch) {
     FetchTaskList();
+    firstFetch.current = true;
+  }
+
+  useEffect(() => {
+    console.log("start");
+    FetchTaskList();
+    console.log("end");
   }, [updatedTaskList, suggestedTask]);
 
   //fetch task function to get the data form database
@@ -41,14 +56,19 @@ function MainScreen() {
       navigate("/signin");
       return;
     }
-
+    console.log("inside fetch");
     try {
-      const response = await axios.get("http://localhost:3200/todo/todolist", {
-        headers: {
-          token: token,
-        },
-      });
-      // console.log(response.data.todoList);
+      const response = await axios.get(
+        "http://192.168.29.178:3200/todo/todolist",
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+      console.log("fetch done");
+      console.log(response.data.todoList);
+
       if (response.data.message == "todoList fetched") {
         setTaskList(response.data.todoList);
       }
@@ -56,7 +76,6 @@ function MainScreen() {
       console.log(error);
     }
   }
-
 
   ///route for task deletion from database
   async function deleteTodo(id) {
@@ -67,12 +86,15 @@ function MainScreen() {
     }
 
     try {
-      const response = await axios.delete("http://localhost:3200/todo/delete", {
-        headers: {
-          token: token,
-          todoid: id,
-        },
-      });
+      const response = await axios.delete(
+        "http://192.168.29.178:3200/todo/delete",
+        {
+          headers: {
+            token: token,
+            todoid: id,
+          },
+        }
+      );
       // console.log(response);
       if (response.data.message == "todoDeleted") {
         setUpdatedTaskList(!updatedTaskList);
@@ -81,7 +103,6 @@ function MainScreen() {
       console.log(error);
     }
   }
-
 
   //for updating task if it is completed or not
   async function isCompleteTask(id) {
@@ -93,7 +114,7 @@ function MainScreen() {
 
     try {
       const response = await axios.put(
-        "http://localhost:3200/todo/update",
+        "http://192.168.29.178:3200/todo/update",
         {
           completed: curentValueCompleted,
         },
@@ -188,9 +209,9 @@ function MainScreen() {
       return (
         <div
           key={task._id}
-          className="flex  flex-row  justify-between cursor-pointer  hover:bg-gray-100 rounded-md py-2 px-2 pr-3 my-1 items-center font-medium text-gray-700 mx-6"
+          className="flex   flex-row  justify-between cursor-pointer bg-gray-50 md:bg-white  hover:bg-gray-100 rounded-md py-2 px-2 pr-3 my-1 items-center font-medium text-gray-700 mx-2 md:mx-6"
         >
-          <div className="flex items-center   gap-3">
+          <div className="flex items-center  gap-2 md:gap-3">
             <div
               onClick={() => {
                 isCompleteTask(task._id);
@@ -205,7 +226,7 @@ function MainScreen() {
               onClick={() => {
                 setClickedIndex(index);
                 // navigate("/dashboard/edittask");
-                setCurrentScreen('updateTask')
+                setCurrentScreen("updateTask");
               }}
             >
               <div
@@ -215,16 +236,16 @@ function MainScreen() {
               >
                 {task.title}
               </div>
-              <div className="flex gap-5 font-normal text-sm text-gray-500">
+              <div className="flex gap-5  font-normal text-sm text-gray-500">
                 <div
-                  className={`${
+                  className={`flex gap-1 md:block ${
                     taskComplete ? "text-gray-400 " : " text-gray-700"
                   }`}
                 >
                   <span>{categoryEmoji(task.category)}</span> {task.category}
                 </div>
                 <div
-                  className={`${
+                  className={` text-center md:text-left ${
                     taskComplete ? "text-gray-400 " : " text-gray-700"
                   }`}
                 >
@@ -279,13 +300,50 @@ function MainScreen() {
     });
   }
 
+  const { burgerMenu, setBurgerMenu } = useContext(TodoContext);
+  const { burgerMenuVisible, setBurgerMenuVisible } = useContext(TodoContext);
+
+  const { sidebarBurger } = useContext(TodoContext);
+
+  const { aiMenu, setAiMenu } = useContext(TodoContext);
+    const { aiMenuVisible, setAiMenuVisible } = useContext(TodoContext);
+  
+    const { aiMenuBurger } = useContext(TodoContext);
+
+  console.log("mainscreen ended");
+
   return (
-    <div className="w-full h-dvh   py-3  ">
-      <div className="font-bold text-xl px-6  text-gray-800 pt-2 pb-4 border-b-1 border-gray-300">
-        Tasks
+    <div className="w-full h-dvh  py-0 md:py-3  ">
+      <div className="font-bold text-xl px-2 md:px-6 text-center md:text-left flex items-center gap-4   text-gray-800 pt-0 md:pt-2 pb-2 md:pb-4 border-b-1 border-gray-300">
+        <div
+          onClick={() => {
+            setBurgerMenu(!burgerMenu);
+            sidebarBurger();
+            console.log("hey");
+          }}
+          className={` ${
+              window.innerWidth < 768 ? "block py-3 " : "hidden"
+            }`}
+        >
+          <RxHamburgerMenu size={28} />
+        </div>
+        <span className="mr-auto">Tasks</span>
+        <div
+          onClick={() => {
+            setAiMenu(!aiMenu);
+            aiMenuBurger();
+            console.log("hey");
+          }}
+          className="py-3"
+        >
+          <BsRobot className={` ${
+              window.innerWidth < 768 ? "block mr-2 " : "hidden"
+            }`} size={28} />
+        </div>
       </div>
+
       <div className="flex flex-col gap-5">
-        <div className="flex flex-row items-center gap-2 font-semibold px-6 mt-4">
+        <div className="flex flex-row items-center gap-2 font-semibold px-2 md:px-6 mt-2 md:mt-4">
           <div
             onClick={() => {
               setFilterMethod("all");
@@ -327,10 +385,9 @@ function MainScreen() {
         <div
           onClick={() => {
             // navigate("/dashboard/newtask");
-            setCurrentScreen('newTask')
-            
+            setCurrentScreen("newTask");
           }}
-          className="flex gap-2 mx-6 transition-colors hover:border-teal-300 hover:bg-teal-100 rounded-md py-3 p-1 border-1 border-gray-300 text-gray-400"
+          className="flex gap-2 mx-2 md:mx-6 transition-colors hover:border-teal-300 hover:bg-teal-100 rounded-md py-3 p-1 border-1 border-gray-300 text-gray-400"
         >
           <IoAdd
             className="cursor-pointer  rounded-sm "

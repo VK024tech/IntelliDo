@@ -3,6 +3,7 @@ import { createContext, useRef, useState } from "react";
 export const TodoContext = createContext();
 
 export const TodoContextProvider = ({ children }) => {
+  const [currentScreen, setCurrentScreen] = useState("main");
   const [startDateTime, setStartDateTime] = useState();
   const [endDateTime, setEndDateTime] = useState();
 
@@ -38,7 +39,6 @@ export const TodoContextProvider = ({ children }) => {
   const resolveRef = useRef(null);
   const rejectRef = useRef(null);
 
-   const [currentScreen, setCurrentScreen] = useState("main");
 
   const getUserInput = () => {
     setPromptOpen(true);
@@ -48,7 +48,45 @@ export const TodoContextProvider = ({ children }) => {
     });
   };
 
+
+  const [burgerMenu, setBurgerMenu] = useState(false);
+  const [burgerMenuVisible, setBurgerMenuVisible] = useState(window.innerWidth<768 ?"-translate-x-80": "translate-x-0");
+
+
+
+  function sidebarBurger() {
+    if (burgerMenu) {
+      setBurgerMenuVisible("translate-x-0");
+    } else {
+      setBurgerMenuVisible("-translate-x-80");
+    }
+  }
+
+  const [aiMenu, setAiMenu] = useState(false);
+  const [aiMenuVisible, setAiMenuVisible] = useState("translate-x-100");
+
+  function aiMenuBurger() {
+    if (aiMenu) {
+      return (setAiMenuVisible("translate-x-0"))
+    } else {
+      return (setAiMenuVisible("translate-x-100"))
+    }
+  }
+
   const contextValue = {
+
+    setAiMenuVisible,
+    aiMenuVisible,
+    aiMenuBurger,
+    setAiMenu,
+    aiMenu,
+    sidebarBurger,
+    setBurgerMenuVisible,
+    burgerMenuVisible,
+    setBurgerMenu,
+    burgerMenu,
+    currentScreen,
+    setCurrentScreen,
     startDateTime,
     setStartDateTime,
     endDateTime,
@@ -85,8 +123,6 @@ export const TodoContextProvider = ({ children }) => {
     resolveRef,
     suggestedTask,
     setSuggestedTask,
-    currentScreen,
-    setCurrentScreen
   };
 
   return (
