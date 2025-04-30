@@ -26,9 +26,11 @@ app.use("/auth", authRoutes);
 app.use("/todo", todoRoutes);
 app.use("/connect", geminiRoutes);
 
+const host  = '0.0.0.0';
+
 async function ServerStart() {
   await mongoose.connect(process.env.MONGODB);
-  app.listen(process.env.PORT);
+  app.listen(process.env.PORT, host);
   console.log("Server started");
 }
 

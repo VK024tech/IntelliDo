@@ -114,7 +114,8 @@ router.delete("/delete", authMiddleware, async (req, res) => {
 //router for fetching all todo
 router.get("/todolist", authMiddleware, async (req, res) => {
   const userId = req.headers.userId;
-
+  console.log(userId)
+  
   try {
     if (
       await user.findOne({
@@ -125,7 +126,8 @@ router.get("/todolist", authMiddleware, async (req, res) => {
         const todoArray = await todo.find({
           userId: userId,
         });
-
+        
+        console.log(todoArray)
         return res.json({
           message: "todoList fetched",
           todoList: todoArray,

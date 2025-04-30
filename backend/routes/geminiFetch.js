@@ -7,7 +7,6 @@ const router = express.Router();
 /// google genai to use
 const { GoogleGenAI } = require("@google/genai");
 
-
 ///route get suggestions based on email fetched using gmail
 router.get("/gemini", async (req, res) => {
   const getMails = await fetch("http://localhost:3200/auth/emails", {
@@ -16,7 +15,8 @@ router.get("/gemini", async (req, res) => {
   });
 
   const finalData = await getMails.json();
-  
+
+  console.log("this is email:", finalData);
 
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.GeminiApi });
@@ -93,10 +93,14 @@ router.get("/gemini", async (req, res) => {
         response.candidates[0].content.parts[0].text
       );
 
+      console.log("this is single suggestion:", parsedTaks);
+
       suggestedTasks.push(...parsedTaks);
+
+      console.log("this is suggestion:", suggestedTasks);
     }
 
-    console.log(suggestedTasks)
+    console.log(suggestedTasks);
     res.json(suggestedTasks);
   } catch (error) {
     res.status(500).json({
