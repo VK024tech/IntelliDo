@@ -21,7 +21,7 @@ const router = express.Router();
 passport.use(
   new GoogleStrategy(
     {
-      callbackURL: "https://intelli-do.vercel.app/auth/google/callback",
+      callbackURL: "https://intelli-do-git-main-kandarivivek260-gmailcoms-projects.vercel.app/auth/google/callback",
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       scope: ["profile", "email"],
