@@ -10,6 +10,7 @@ import { TodoContext } from "../../contexts/TodoContext";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { BsRobot } from "react-icons/bs";
 
+
 function MainScreen() {
   console.log("mainscreen started");
 
@@ -59,7 +60,7 @@ function MainScreen() {
     console.log("inside fetch");
     try {
       const response = await axios.get(
-        "http://192.168.29.178:3200/todo/todolist",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/todo/todolist`,
         {
           headers: {
             token: token,
@@ -87,7 +88,7 @@ function MainScreen() {
 
     try {
       const response = await axios.delete(
-        "http://192.168.29.178:3200/todo/delete",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/todo/delete`,
         {
           headers: {
             token: token,
@@ -114,7 +115,7 @@ function MainScreen() {
 
     try {
       const response = await axios.put(
-        "http://192.168.29.178:3200/todo/update",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/todo/update`,
         {
           completed: curentValueCompleted,
         },

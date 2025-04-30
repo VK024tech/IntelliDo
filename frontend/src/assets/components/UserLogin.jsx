@@ -37,12 +37,12 @@ function UserLogin() {
 
    // sign up route for google oauth
   async function signInWithGoogle() {
-    window.location.href = "http://192.168.29.178:3200/auth/google";
+    window.location.href = `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/google`;
   }
 
   //api call to sign in user
   async function SignInUser() {
-    const response = await axios.post("http://192.168.29.178:3200/user/signin", {
+    const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/signin`, {
       email: userEmail,
       password: userPassword,
     });

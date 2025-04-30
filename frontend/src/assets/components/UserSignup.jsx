@@ -97,7 +97,7 @@ export default function UserSign() {
 
   // api call to backend to create new account
   async function SignUpUser() {
-    const response = await axios.post("http://192.168.29.178:3200/user/signup", {
+    const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/signup`, {
       name: userName,
       username: userName.split(" ")[0],
       email: userEmail,
@@ -109,8 +109,8 @@ export default function UserSign() {
 
   // sign up route for google oauth
   async function signUpWithGoogle() {
-    // const response = await axios.get("http://192.168.29.178:3200/auth/google");
-    window.location.href = "http://localhost:3200/auth/google";
+    // const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/google`);
+    window.location.href = `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/google`;
     // console.log(response)
     // return response;
   }

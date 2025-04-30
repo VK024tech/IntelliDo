@@ -37,7 +37,7 @@ function Aiassist() {
 
     try {
       const response = await axios.get(
-        "http://192.168.29.178:3200/auth/refreshToken",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/refreshToken`,
         {
           headers: {
             token: token,
@@ -67,7 +67,7 @@ function Aiassist() {
 
     try {
       const response = await axios.post(
-        "http://192.168.29.178:3200/todo/add",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/todo/add`,
         {
           title: suggestedTask[index].TaskName,
           priority: suggestedTask[index].Priority,
@@ -101,7 +101,7 @@ function Aiassist() {
 
     try {
       const response = await axios.get(
-        "http://192.168.29.178:3200/connect/gemini",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/connect/gemini`,
         {
           headers: {
             token: token,

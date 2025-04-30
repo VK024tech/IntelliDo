@@ -44,7 +44,7 @@ function Sidebar() {
 
     try {
       const response = await axios.get(
-        "http://192.168.29.178:3200/user/allcategories",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/allcategories`,
 
         {
           headers: {
@@ -71,7 +71,7 @@ function Sidebar() {
 
     try {
       const response = await axios.post(
-        "http://192.168.29.178:3200/user/addcategory",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/addcategory`,
         {
           totalCategories: [...totalCategories],
         },
@@ -115,7 +115,7 @@ function Sidebar() {
 
     try {
       const response = await axios.post(
-        "http://192.168.29.178:3200/user/addcategory",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/addcategory`,
         {
           totalCategories: [...totalCategories, CategoryName],
         },

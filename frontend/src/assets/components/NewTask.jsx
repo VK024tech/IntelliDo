@@ -74,7 +74,7 @@ const { currentScreen, setCurrentScreen } = useContext(TodoContext);
 
     try {
       const response = await axios.post(
-        "http://192.168.29.178:3200/todo/add",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/todo/add`,
         {
           title: title,
           priority: priority,

@@ -89,7 +89,7 @@ function UpdateTask() {
 
     try {
       const response = await axios.put(
-        "http://192.168.29.178:3200/todo/update",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/todo/update`,
         {
           title: currentTitle,
           priority: currentPriority,
