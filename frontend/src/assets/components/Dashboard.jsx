@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import Sidebar from "./sidebar";
+import Sidebar from "./Sidebar";
 import Aiassist from "./Aiassist";
 import MainScreen from "./MainScreen";
 import UpdateTask from "./UpdateTask";
