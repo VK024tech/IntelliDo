@@ -1,6 +1,9 @@
 //import passport library
 const passport = require("passport");
 
+//import dotenv for secrets
+require("dotenv").config();
+
 //import db schema
 const { todo, user } = require("../database/schemadb");
 
@@ -50,7 +53,7 @@ router.get(
   (req, res) => {
     const { token, accessToken, refreshToken, user } = req.user;
 
-    res.redirect(`http://localhost:5173/dashboard?jwt=${token}`);
+    res.redirect(`${process.env.FRONTEND_URL}/dashboard?jwt=${token}`);
   }
 );
 
@@ -73,7 +76,6 @@ router.get("/emails", authMiddleware, async (req, res) => {
   }
 });
 
-
 // route to refrech access tokens using the refresh tokens
 router.get("/refreshToken", authMiddleware, async (req, res) => {
   try {
@@ -91,7 +93,7 @@ router.get("/refreshToken", authMiddleware, async (req, res) => {
       accessToken: newtoken,
     });
 
-    console.log('this is new token:',newtoken);
+    console.log("this is new token:", newtoken);
 
     res.json("Successfull");
   } catch (error) {
