@@ -196,12 +196,12 @@ function Aiassist() {
       return (
         <div
           key={index}
-          className={`flex justify-around ${lastMargin(index)} md:pl-2  md:mx-0 no-scrollbar bg-white w-full  max-w-[25rem] p-2 md:p-2 py-4 rounded-xl border-1 border-gray-300`}
+          className={`flex justify-around ${lastMargin(index)} md:pl-2  md:mx-0 no-scrollbar w-full md:w-max bg-white  max-w-[25rem] p-2 md:p-2 py-4 rounded-xl border-1 border-gray-300`}
         >
           <FaWandMagicSparkles
             style={{ color: "#00BBA7" }}
             size={18}
-            className="m-1  w-full "
+            className="m-1 md:invisible visible  w-max "
           />
 
           <div className={`ml-4 mr-4 } `}>
@@ -255,7 +255,7 @@ function Aiassist() {
       }  fixed md:static transition-transform transform max-w-xl  duration-500  h-dvh px-2 md:px-5 ml-auto  border-l-1 border-gray-300`}
     >
       <div className="font-semibold py-4 flex w-full justify-between   items-center ">
-        <div className="flex items-center ">
+        <div className="flex items-center w-max ">
           IntelliDo Suggestions
           {/* <WiStars
             style={{ color: "#00BBA7" }}
