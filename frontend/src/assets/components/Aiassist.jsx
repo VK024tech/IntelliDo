@@ -250,7 +250,7 @@ function Aiassist() {
 
   return (
     <div
-      className={`bg-gray-100  w-full  ${
+      className={`bg-gray-100  w-fit  ${
         window.innerWidth < 768 ? aiMenuVisible : "translate-x-0 static"
       }  fixed md:static transition-transform transform max-w-xl  duration-500  h-dvh px-2 md:px-5 ml-auto  border-l-1 border-gray-300`}
     >
