@@ -9,7 +9,7 @@ const { GoogleGenAI } = require("@google/genai");
 
 ///route get suggestions based on email fetched using gmail
 router.get("/gemini", async (req, res) => {
-  const getMails = await fetch("http://localhost:3200/auth/emails", {
+  const getMails = await fetch("https://intelli-do.vercel.app/auth/emails", {
     method: "GET",
     headers: { token: req.headers.token },
   });
