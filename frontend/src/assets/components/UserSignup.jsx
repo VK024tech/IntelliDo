@@ -7,6 +7,7 @@ import { LiaEyeSolid, LiaEyeSlashSolid } from "react-icons/lia";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineUser } from "react-icons/ai";
 import { UserContext } from "../../contexts/UserContext";
+import image from '../../images/image_fx2.jpg'
 
 export default function UserSign() {
   const navigate = useNavigate();
@@ -262,7 +263,7 @@ export default function UserSign() {
         
         <img
           className="w-md max-w-95 md:max-w-100  hidden md:block  h-auto max-h-full rounded-2xl  "
-          src="./images/image_fx2.jpg"
+          src={image}
           alt="image"
         />
   

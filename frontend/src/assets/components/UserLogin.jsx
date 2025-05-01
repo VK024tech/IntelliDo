@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { LiaEyeSolid, LiaEyeSlashSolid } from "react-icons/lia";
+import image from '../../images/image_fx2.jpg'
 
 import axios from "axios";
 
@@ -188,7 +189,7 @@ function UserLogin() {
       <div className="bg-white w-auto  flex flex-row justify-center   rounded-2xl shadow-lg shadow-teal-200 px-2  items-center h-full py-2 md:py-8 md:pl-8  [@media(width<426px)]:mx-0 [@media(width>425px)]:mx-0    [@media(width>768px)]:mx-20">
         <img
           className="w-md max-w-95 md:max-w-100  hidden md:block  h-auto max-h-full rounded-2xl  "
-          src="./images/image_fx2.jpg"
+          src={image}
           alt="image"
         />
 
