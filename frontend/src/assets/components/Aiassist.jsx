@@ -257,13 +257,13 @@ function Aiassist() {
       <div className="font-semibold py-4 flex w-full justify-between   items-center ">
         <div className="flex items-center ">
           IntelliDo Suggestions
-          <WiStars
+          {/* <WiStars
             style={{ color: "#00BBA7" }}
             size={34}
             className={`ml-1 ${
               window.innerWidth > 768 ? "visible" : "invisible"
             } `}
-          />
+          /> */}
         </div>
         <div
           onClick={() => {
