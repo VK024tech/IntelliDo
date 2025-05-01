@@ -194,7 +194,7 @@ function UserLogin() {
         />
 
         <div className="w-full max-w-sm mx-auto mb-auto md:my-auto py-2 px-2 md:px-6 flex flex-col gap-2 md:gap-1">
-        <div className=" text-center py-2 pb-8 [@media(width>766px)]:pb-2 text-4xl font-bold text-gray-900">
+        <div className=" text-center py-2 pb-8 md:pb-24 [@media(width>766px)]:pb-2 text-4xl font-bold text-gray-900">
             Intelli<span className="text-teal-500">Do</span>
             <div className="text-xs    ">
               <span >The Smarter way to do!</span>
