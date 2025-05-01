@@ -12,7 +12,7 @@ import { BsRobot } from "react-icons/bs";
 
 
 function MainScreen() {
-  console.log("mainscreen started");
+  // console.log("mainscreen started");
 
   const iconColor = "#aeabb6";
   let taskIcon = "#adadad";
@@ -33,7 +33,7 @@ function MainScreen() {
 
   const { currentScreen, setCurrentScreen } = useContext(TodoContext);
 
-  console.log(currentScreen);
+  // console.log(currentScreen);
 
   const firstFetch = useRef(false);
 
@@ -45,9 +45,9 @@ function MainScreen() {
   }
 
   useEffect(() => {
-    console.log("start");
+    // console.log("start");
     FetchTaskList();
-    console.log("end");
+    // console.log("end");
   }, [updatedTaskList, suggestedTask]);
 
   //fetch task function to get the data form database
@@ -57,7 +57,7 @@ function MainScreen() {
       navigate("/signin");
       return;
     }
-    console.log("inside fetch");
+    // console.log("inside fetch");
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/todo/todolist`,
@@ -67,8 +67,8 @@ function MainScreen() {
           },
         }
       );
-      console.log("fetch done");
-      console.log(response.data.todoList);
+      // console.log("fetch done");
+      // console.log(response.data.todoList);
 
       if (response.data.message == "todoList fetched") {
         setTaskList(response.data.todoList);
@@ -150,9 +150,9 @@ function MainScreen() {
       if (dateBasedFilter == "Today") {
         dateFilter = taskList.filter((curr) => {
           const dateTime = curr.creationDate;
-          console.log("i;mmain" + dateTime);
+          // console.log("i;mmain" + dateTime);
           const newDateTime = new Date(dateTime);
-          console.log("i;mmain" + newDateTime);
+          // console.log("i;mmain" + newDateTime);
 
           return newDateTime.toLocaleDateString() === today;
         });
@@ -311,7 +311,7 @@ function MainScreen() {
   
     const { aiMenuBurger } = useContext(TodoContext);
 
-  console.log("mainscreen ended");
+  // console.log("mainscreen ended");
 
   return (
     <div className="w-full h-dvh  py-0 md:py-3  ">
@@ -320,7 +320,7 @@ function MainScreen() {
           onClick={() => {
             setBurgerMenu(!burgerMenu);
             sidebarBurger();
-            console.log("hey");
+            // console.log("hey");
           }}
           className={` ${
               window.innerWidth < 768 ? "block py-3 " : "hidden"
@@ -333,7 +333,7 @@ function MainScreen() {
           onClick={() => {
             setAiMenu(!aiMenu);
             aiMenuBurger();
-            console.log("hey");
+            // console.log("hey");
           }}
           className="py-3"
         >
