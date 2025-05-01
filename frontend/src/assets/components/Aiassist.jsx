@@ -196,7 +196,7 @@ function Aiassist() {
       return (
         <div
           key={index}
-          className={`flex justify-around ${lastMargin(index)} md:pl-2 mx-1 md:mx-0 no-scrollbar bg-white w-fit md:w-full max-w-[25rem] p-2 md:p-2 py-4 rounded-xl border-1 border-gray-300`}
+          className={`flex justify-around ${lastMargin(index)} md:pl-2  md:mx-0 no-scrollbar bg-white w-full  max-w-[25rem] p-2 md:p-2 py-4 rounded-xl border-1 border-gray-300`}
         >
           <FaWandMagicSparkles
             style={{ color: "#00BBA7" }}
