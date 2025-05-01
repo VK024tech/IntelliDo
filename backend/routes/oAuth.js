@@ -53,7 +53,7 @@ router.get(
   (req, res) => {
     const { token, accessToken, refreshToken, user } = req.user;
 
-    res.redirect(`${process.env.FRONTEND_URL}/dashboard?jwt=${token}`);
+    res.redirect(`intelli-do-czk5.vercel.app/dashboard?jwt=${token}`);
   }
 );
 
