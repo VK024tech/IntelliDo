@@ -252,7 +252,7 @@ function Aiassist() {
     <div
       className={`bg-gray-100  w-full  ${
         window.innerWidth < 768 ? aiMenuVisible : "translate-x-0 static"
-      }  fixed md:static transition-transform transform  duration-500  h-dvh px-2 md:px-5 ml-auto  border-l-1 border-gray-300`}
+      }  fixed md:static transition-transform transform max-w-xl  duration-500  h-dvh px-2 md:px-5 ml-auto  border-l-1 border-gray-300`}
     >
       <div className="font-semibold py-4 flex w-full justify-between   items-center ">
         <div className="flex items-center ">
@@ -280,7 +280,7 @@ function Aiassist() {
           />
         </div>
       </div>
-      <div className="flex flex-col w-full max-w-3xl h-fit overflow-y-auto no-scrollbar   gap-5">
+      <div className="flex flex-col w-full h-fit overflow-y-auto no-scrollbar   gap-5">
         {Suggestions()}
         {/* <div className="mb-8 w-full invisible text-center">
           Dummy Suggestion
