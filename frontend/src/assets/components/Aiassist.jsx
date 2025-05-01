@@ -46,7 +46,7 @@ function Aiassist() {
       );
       // console.log(response.data.message);
       if (response) {
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
       }
     } catch (error) {
@@ -88,7 +88,7 @@ function Aiassist() {
       if (response.data.message == "Successfull") {
         const updatedTasks = suggestedTask.filter((current, i) => i !== index);
         setSuggestedTask(updatedTasks);
-        console.log("successfull");
+        // console.log("successfull");
       }
     } catch (error) {
       console.log(error.response.data.message);
@@ -108,7 +108,7 @@ function Aiassist() {
           },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
       setSuggestedTask(response.data);
       hasMounted.current = true;
     } catch (error) {
@@ -116,7 +116,7 @@ function Aiassist() {
       if (error?.message == "Request failed with status code 500") {
         console.log("failed to load with 500, refreshing token ");
         const refreshed = await RefreshToken();
-        console.log(refreshed);
+        // console.log(refreshed);
         if (refreshed) {
           console.log("retrying fetch");
           fetchSuggestions();
@@ -269,7 +269,7 @@ function Aiassist() {
           onClick={() => {
             setAiMenu(!aiMenu);
             aiMenuBurger();
-            console.log("hey");
+            // console.log("hey");
           }}
         >
           <IoClose

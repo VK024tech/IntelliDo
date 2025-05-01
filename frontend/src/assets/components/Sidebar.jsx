@@ -27,7 +27,7 @@ function Sidebar() {
   //promise for await on user input prompt
   const { getUserInput } = useContext(TodoContext);
 
-  console.log(totalCategories);
+  // console.log(totalCategories);
 
   //for fetching all categories on mount of component
   useEffect(() => {
@@ -83,7 +83,7 @@ function Sidebar() {
       );
       // console.log(response.data.todoList);
       if (response.data.message == "Successfull created category") {
-        console.log("done");
+        // console.log("done");
         fetchAllCategories();
       }
     } catch (error) {
@@ -102,7 +102,7 @@ function Sidebar() {
     }
 
     if (!CategoryName || CategoryName.trim() == "") {
-      console.log("Cancel");
+      // console.log("Cancel");
       return;
     }
 
@@ -127,7 +127,7 @@ function Sidebar() {
       );
       // console.log(response.data.todoList);
       if (response.data.message == "Successfull created category") {
-        console.log("done");
+        // console.log("done");
       }
 
       fetchAllCategories();
@@ -145,10 +145,10 @@ function Sidebar() {
               onClick={() => {
                 if (dateBasedFilter !== "Today") {
                   setDateBasedFilter("Today");
-                  console.log(dateBasedFilter);
+                  // console.log(dateBasedFilter);
                 } else {
                   setDateBasedFilter("");
-                  console.log(dateBasedFilter);
+                  // console.log(dateBasedFilter);
                 }
               }}
               className={`cursor-pointer transition  rounded-xl ${
@@ -168,10 +168,10 @@ function Sidebar() {
               onClick={() => {
                 if (dateBasedFilter !== "Upcoming") {
                   setDateBasedFilter("Upcoming");
-                  console.log(dateBasedFilter);
+                  // console.log(dateBasedFilter);
                 } else {
                   setDateBasedFilter("");
-                  console.log(dateBasedFilter);
+                  // console.log(dateBasedFilter);
                 }
               }}
               className={`cursor-pointer transition  rounded-xl ${
@@ -260,10 +260,10 @@ function Sidebar() {
             onClick={() => {
               if (selectedCategory !== category) {
                 setSelectedCategory(category);
-                console.log(selectedCategory);
+                // console.log(selectedCategory);
               } else {
                 setSelectedCategory("");
-                console.log(selectedCategory);
+                // console.log(selectedCategory);
               }
             }}
             key={category}
@@ -339,7 +339,7 @@ function Sidebar() {
               onClick={() => {
                 setBurgerMenu(!burgerMenu);
                 sidebarBurger();
-                console.log("hey");
+                // console.log("hey");
               }}
               className="py-3"
             >
