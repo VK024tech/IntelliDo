@@ -194,7 +194,7 @@ function UserLogin() {
         />
 
         <div className="w-full max-w-sm mx-auto mb-auto md:my-auto py-2 px-2 md:px-6 flex flex-col gap-2 md:gap-1">
-        <div className=" text-center py-2 pb-8 [@media(width>766px)]:pb-24 text-4xl font-bold text-gray-900">
+        <div className=" text-center py-2 pb-8 [@media(width>766px)]:pb-16 text-4xl font-bold text-gray-900">
             Intelli<span className="text-teal-500">Do</span>
             <div className="text-xs    ">
               <span >The Smarter way to do!</span>
@@ -211,7 +211,7 @@ function UserLogin() {
             onClick={() => {
               signInButton();
             }}
-            className="bg-teal-300 hover:bg-teal-400 text-white p-2 text-center rounded-md py-3 mb-4 cursor-pointer"
+            className="bg-teal-300 hover:bg-teal-400 text-white p-2 text-center md:mb-8 rounded-md py-3 mb-4 cursor-pointer"
           >
             Sign In
           </div>
