@@ -73,6 +73,7 @@ router.get("/emails", authMiddleware, async (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: error.data,
+      msg: "unable to fetch messages due to token"
     });
   }
 });

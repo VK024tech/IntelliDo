@@ -11,7 +11,7 @@ async function getMessageIds(accessToken) {
       userId: "me",
       q: "category:primary",
       labelIds: ["INBOX"],
-      maxResults: 12,
+      maxResults: 1,
     });
     return response.data.messages || [];
   } catch (error) {

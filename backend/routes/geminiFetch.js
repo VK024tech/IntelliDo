@@ -20,7 +20,7 @@ router.get("/gemini", async (req, res) => {
 
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.GeminiApi });
-    // const response = await ai.models.generateContent({
+   
     //   model: "gemini-2.0-flash",
     //   contents: finalData[7].i,
     //   config: {
@@ -89,7 +89,7 @@ router.get("/gemini", async (req, res) => {
 
       //   console.log(JSON.parse(response.candidates[0].content.parts[0].text));
 
-      const parsedTaks = JSON.parse(
+      const parsedTaks = await JSON.parse(
         response.candidates[0].content.parts[0].text
       );
 
