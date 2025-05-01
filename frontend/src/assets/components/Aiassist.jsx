@@ -280,7 +280,7 @@ function Aiassist() {
           />
         </div>
       </div>
-      <div className="flex flex-col w-full h-fit overflow-y-auto no-scrollbar   gap-5">
+      <div className="flex flex-col w-full max-w-3xl h-fit overflow-y-auto no-scrollbar   gap-5">
         {Suggestions()}
         {/* <div className="mb-8 w-full invisible text-center">
           Dummy Suggestion
