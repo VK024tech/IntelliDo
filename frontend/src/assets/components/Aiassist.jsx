@@ -282,9 +282,9 @@ function Aiassist() {
       </div>
       <div className="flex flex-col w-fit h-fit overflow-y-auto no-scrollbar   gap-5">
         {Suggestions()}
-        <div className="mb-8 w-full invisible text-center">
+        {/* <div className="mb-8 w-full invisible text-center">
           Dummy Suggestion
-        </div>
+        </div> */}
         <div className="fixed pl-14 w-fit  bottom-0 bg-gray-100 px-auto py-4 ">
           <div
             onClick={() => {
