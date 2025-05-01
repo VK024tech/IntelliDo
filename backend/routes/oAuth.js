@@ -48,7 +48,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     session: false,
-    failureRedirect: "/user/signup",
+    failureRedirect: "https://intelli-do-czk5.vercel.app/",
   }),
   (req, res) => {
     const { token, accessToken, refreshToken, user } = req.user;
