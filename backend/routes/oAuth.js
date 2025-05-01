@@ -51,9 +51,10 @@ router.get(
     failureRedirect: "https://intelli-do-czk5.vercel.app/",
   }),
   (req, res) => {
+    console.log('coming from callback',req)
     const { token, accessToken, refreshToken, user } = req.user;
 
-    res.redirect(`intelli-do-czk5.vercel.app/dashboard?jwt=${token}`);
+    res.redirect(`https://intelli-do-czk5.vercel.app/dashboard?jwt=${token}`);
   }
 );
 
