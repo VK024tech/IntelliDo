@@ -204,7 +204,7 @@ function Aiassist() {
             className="m-1  w-full "
           />
 
-          <div className={`ml-4 mr-4 } `}>
+          <div className={`ml-2 md:ml-4 mr-2 md:mr-4 } `}>
             {/* suggest fsdbdf gs  gdwvsdcd  cwevwvwev */}
             {current.TaskName}
             <div className="flex justify-center gap-6 mt-2">
