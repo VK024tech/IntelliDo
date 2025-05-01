@@ -51,7 +51,7 @@ router.get(
     failureRedirect: "https://intelli-do-czk5.vercel.app/",
   }),
   (req, res) => {
-    console.log('coming from callback',req)
+    // console.log('coming from callback',req)
     const { token, accessToken, refreshToken, user } = req.user;
 
     res.redirect(`https://intelli-do-czk5.vercel.app/dashboard?jwt=${token}`);
@@ -94,7 +94,7 @@ router.get("/refreshToken", authMiddleware, async (req, res) => {
       accessToken: newtoken,
     });
 
-    console.log("this is new token:", newtoken);
+    // console.log("this is new token:", newtoken);
 
     res.json("Successfull");
   } catch (error) {

@@ -20,7 +20,7 @@ const jwt = require("jsonwebtoken");
 router.post("/add", authMiddleware, async (req, res) => {
   const userTodo = req.body;
 
-  console.log(userTodo);
+  // console.log(userTodo);
 
   try {
     await todo.create({
@@ -114,7 +114,7 @@ router.delete("/delete", authMiddleware, async (req, res) => {
 //router for fetching all todo
 router.get("/todolist", authMiddleware, async (req, res) => {
   const userId = req.headers.userId;
-  console.log(userId)
+  // console.log(userId)
   
   try {
     if (
@@ -127,7 +127,7 @@ router.get("/todolist", authMiddleware, async (req, res) => {
           userId: userId,
         });
         
-        console.log(todoArray)
+        // console.log(todoArray)
         return res.json({
           message: "todoList fetched",
           todoList: todoArray,
