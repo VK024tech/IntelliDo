@@ -250,11 +250,11 @@ function Aiassist() {
 
   return (
     <div
-      className={`bg-gray-100 max-w-fit w-full  ${
+      className={`bg-gray-100  w-full  ${
         window.innerWidth < 768 ? aiMenuVisible : "translate-x-0 static"
       }  fixed md:static transition-transform transform  duration-500  h-dvh px-2 md:px-5 ml-auto  border-l-1 border-gray-300`}
     >
-      <div className="font-semibold py-4 flex w-fit justify-between   items-center ">
+      <div className="font-semibold py-4 flex w-full justify-between   items-center ">
         <div className="flex items-center ">
           IntelliDo Suggestions
           <WiStars
@@ -280,7 +280,7 @@ function Aiassist() {
           />
         </div>
       </div>
-      <div className="flex flex-col w-fit h-fit overflow-y-auto no-scrollbar   gap-5">
+      <div className="flex flex-col w-full h-fit overflow-y-auto no-scrollbar   gap-5">
         {Suggestions()}
         {/* <div className="mb-8 w-full invisible text-center">
           Dummy Suggestion
